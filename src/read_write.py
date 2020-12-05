@@ -55,3 +55,40 @@ def load_trace(file_path, matrix_type, return_df=True):
         return pd.DataFrame(data, columns=headers)
     else:
         return data
+
+def load_manual_tests(file_path, return_df=True):
+    """Loads in the test statuses from the manual tests document. Document must be in .docx format.
+
+    Args:
+        file_path (String): path to the file
+        return_df (bool, optional): If true, returns pandas dataframe. Else dict. Defaults to True.
+
+    Returns:
+        pd.DataFrame or dict: Test names and corresponding statuses
+    """
+    # Make sure file is in docx format, not doc
+    assert ".docx" in file_path, "File must be converted from .doc to .docx. Do this in Microsoft Word by selecting 'File -> Save As -> .docx'"
+
+    # Open the file and read with python-docx package 
+    with open(file_path, 'rb') as f:
+        document = Document(f)
+
+    # Get the test statuses
+    statuses = []
+    for i, table in enumerate(document.tables):
+        if table.cell(0,0).text == "Status:":
+            statuses.append(table.cell(0,1).text)
+    
+    # Get the test names
+    test_names = []
+    for i, paragraph in enumerate(document.paragraphs):
+        if "Run ID" in paragraph.text:
+            test_names.append(document.paragraphs[i-1].text)
+
+    # Output as either pandas dataframe or dict, depending on return_df setting.
+    data = {"test_name":test_names, "status":statuses}
+
+    if return_df:
+        return pd.DataFrame(data)
+    else:
+        return data
