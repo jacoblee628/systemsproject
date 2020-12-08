@@ -14,7 +14,7 @@ def check_prd_has_srs(file_path, matrix_type):
     """
     
     # Load trace matrix
-    trace=rw.load_trace(file_path, matrix_type, return_df=True)
+    trace=rw.read_trace(file_path, matrix_type, return_df=True)
     
     # return trace matrix
     return trace
