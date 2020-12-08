@@ -3,7 +3,8 @@ import openpyxl as pyxl
 import pandas as pd
 from docx import Document
 from openpyxl import Workbook
-
+import pathlib
+from pathlib import Path
 
 def read_trace(file_path, matrix_type, return_df=True):
     """Loads trace matrix .xlsx file and extracts data
