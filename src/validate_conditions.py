@@ -169,7 +169,7 @@ def check_prd_exists(file_path_trace, file_path_prd, matrix_type):
     obs_prd_list=obs_prd["Formatted ID"].unique()
     
     
-    passsed = True
+    passed = True
     invalid = []
     
     for lst in trace["prd_list"]:
@@ -200,7 +200,7 @@ def check_prd_exists(file_path_trace, file_path_prd, matrix_type):
     obs_srs_list=obs_srs["Formatted ID"].unique()
     
     
-    passsed = True
+    passed = True
     invalid = []
     
     for lst in trace["srs_list"]:
