@@ -22,3 +22,71 @@ def check_manual(file_path):
     
     # Return dataframe of valid and invalid tests
     return valid_manual_tests, invalid_manual_tests
+
+def check_rest_api(folder_path):
+    """filter the valid and invalid automated tests
+    
+    Args:
+        folder_path (String): path to the RestApiTests folder
+
+    Returns:
+        two list or pd.DataFrame: the valid and invalid automated rest_api tests
+    """
+    # Load dataframe from the function read_rest_api_tests
+    rest_api_tests=rw.read_rest_api_tests(folder_path, return_df=True)
+    
+    # Check test status and write results in valid_rest_api_tests
+    valid_rest_api_tests=rest_api_tests[(rest_api_tests['status']=='passed') | (rest_api_tests['status']=='failed')]
+    
+    # Check test status and write results in invalid_rest_api_tests
+    invalid_rest_api_tests=rest_api_tests[(rest_api_tests['status']!='passed') & (rest_api_tests['status']!='failed')]
+    
+    # Return dataframe of valid and invalid tests
+    return valid_rest_api_tests, invalid_rest_api_tests
+
+def check_performance_Tests(file_path):
+    """filter the valid and invalid automated tests
+    
+    Args:
+        file_path (String): path to the performance tests file
+
+    Returns:
+        two list or pd.DataFrame: the valid and invalid automated performance tests
+    """
+    # Load dataframe from the function load_performance tests
+    performance_tests=rw.read_performance_test_results_by_tc(file_path, return_df=True)
+    
+    # Check test status and write results in valid_performance_tests
+    valid_performance_tests=performance_tests[(performance_tests['status']=='PASS') | (performance_tests['status']=='FAIL')]
+    
+    # Check test status and write results in invalid_performance_tests
+    invalid_performance_tests=performance_tests[(performance_tests['status']!='PASS') & (performance_tests['status']!='FAIL')]
+    
+    # Return dataframe of valid and invalid tests
+    return valid_performance_tests, invalid_performance_tests
+
+def check_component_Tests(file_path):
+    """filter the valid and invalid automated tests
+    
+    Args:
+        file_path (String): path to the component tests file
+ 
+    Returns:
+        two list or pd.DataFrame: the valid and invalid automated component tests
+    """
+    # Load dataframe from the function load_component tests
+    component_tests=rw.load_msgateway_results(file_path, return_df=True)
+    
+    # Check test status and write results in valid_component_tests
+    valid_component_tests=component_tests[(component_tests['status']=='PASS') | (component_tests['status']=='FAIL')]
+    
+    # Check test status and write results in invalid_component_tests
+    invalid_component_tests=component_tests[(component_tests['status']!='PASS') & (component_tests['status']!='FAIL')]
+    
+    # Return dataframe of valid and invalid tests
+    return valid_component_tests, invalid_component_tests
+
+
+
+
+    
