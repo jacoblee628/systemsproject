@@ -112,3 +112,106 @@ def check_srs_has_prd(file_path, matrix_type):
         return "Passed"
     else :
         return "Failed", invalid    
+    
+
+def check_srs_exists(file_path_trace, file_path_srs, matrix_type):
+    """check whether all srs referenced by tests exist
+    
+    Args:
+        file_path_trace (String): path to the trace matrix
+        file_path_srs (String): path to the csv of obsolete srs
+        matrix_type (String): "CO" or "PSC"
+        
+    Returns:
+        String "Passed" if all srs exist
+        Error message if there is an obsolete srs referenced
+        list of obsolete srs
+    """
+    
+    # Load trace matrix
+    trace=load_trace(file_path_trace, matrix_type, return_df=True)
+    
+    trace["srs_list"] = trace["Test Name"]
+    
+    
+def check_prd_exists(file_path_trace, file_path_prd, matrix_type):
+    """check whether all prd referenced by tests exist
+    
+    Args:
+        file_path_trace (String): path to the trace matrix
+        file_path_prd (String): path to the csv of obsolete prd
+        matrix_type (String): "CO" or "PSC"
+        
+    Returns:
+        String "Passed" if all prd exist
+        Error message if there is an obsolete prd referenced
+        list of obsolete prd
+    """
+    
+    # Load trace matrix
+    trace=load_trace(file_path_trace, matrix_type, return_df=True)
+    
+    trace["prd_list"] = trace["Test Name"]
+    
+    def get_req_list(string, prefix):
+        test_list = string.split()
+        req_list = []
+
+        for val in test_list:
+            if val.startswith(prefix):
+                req_list.append(val)
+        return req_list
+    
+    trace["prd_list"] = trace["prd_list"].apply(lambda row: get_req_list(row, "US"))
+    
+    #load obsolete csv
+    obs_prd=pd.read_csv(file_path_prd)
+    obs_prd_list=obs_prd["Formatted ID"].unique()
+    
+    
+    passsed = True
+    invalid = []
+    
+    for lst in trace["prd_list"]:
+        for val in lst:
+            if val in obs_prd_list:
+                passed = False
+                invalid.append(val)
+    
+    invalid = set(invalid)
+    
+    if passed:
+        return "Passed"
+    else:
+        return "Failed", invalid    
+    def get_req_list(string, prefix):
+        test_list = string.split()
+        req_list = []
+
+        for val in test_list:
+            if val.startswith(prefix):
+                req_list.append(val)
+        return req_list
+    
+    trace["srs_list"] = trace["srs_list"].apply(lambda row: get_req_list(row, "TC"))
+    
+    #load obsolete csv
+    obs_srs=pd.read_csv(file_path_srs)
+    obs_srs_list=obs_srs["Formatted ID"].unique()
+    
+    
+    passsed = True
+    invalid = []
+    
+    for lst in trace["srs_list"]:
+        for val in lst:
+            if val in obs_srs_list:
+                passed = False
+                invalid.append(val)
+    
+    invalid = set(invalid)
+    
+    if passed:
+        return "Passed"
+    else:
+        return "Failed", invalid
