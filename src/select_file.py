@@ -27,14 +27,14 @@ class Application(Frame):
         self.PRDselectBtn=Button(self, text="select",command=self.selectPRDPath)
         self.PRDselectBtn.grid(row=1,column=2)
 
-        #Use case file select
-        self.UseCasepath=StringVar()
-        self.UseCasenameLabel=Label(self, text="UseCase file path:")
-        self.UseCasenameLabel.grid(row=2,column=0)
-        self.UseCasefileName=Entry(self, textvariable=self.UseCasepath, width='60')
-        self.UseCasefileName.grid(row=2,column=1)
-        self.UseCaseselectBtn=Button(self, text="select",command=self.selectUseCasePath)
-        self.UseCaseselectBtn.grid(row=2,column=2)
+        #Obsolete srs file select
+        self.ObsoleteSRSpath=StringVar()
+        self.ObsoleteSRSnameLabel=Label(self, text="Obsolete SRS file path:")
+        self.ObsoleteSRSnameLabel.grid(row=2,column=0)
+        self.ObsoleteSRSfileName=Entry(self, textvariable=self.ObsoleteSRSpath, width='60')
+        self.ObsoleteSRSfileName.grid(row=2,column=1)
+        self.ObsoleteSRSselectBtn=Button(self, text="select",command=self.selectObsoleteSRSPath)
+        self.ObsoleteSRSselectBtn.grid(row=2,column=2)
 
         #Manual as-runs file select
         self.Manualpath=StringVar()
@@ -68,15 +68,15 @@ class Application(Frame):
             messagebox.showwarning("Message",'Wrong name!')
             self.PRDpath.set('')  
 
-    def selectUseCasePath(self):
-        UseCasefile_path = fd.askopenfilename()
-        self.UseCasepath.set(UseCasefile_path)
-        UseCasename=self.UseCasefileName.get()
-        if 'Use Case' in UseCasename:
-            messagebox.showinfo("Message",UseCasename)
+    def selectObsoleteSRSPath(self):
+        ObsoleteSRSfile_path = fd.askopenfilename()
+        self.ObsoleteSRSpath.set(ObsoleteSRSfile_path)
+        ObsoleteSRSname=self.ObsoleteSRSfileName.get()
+        if 'Obsolete' in ObsoleteSRSname:
+            messagebox.showinfo("Message",ObsoleteSRSname)
         else:
             messagebox.showwarning("Message",'Wrong name!')
-            self.UseCasepath.set('')    
+            self.ObsoleteSRSpath.set('')    
 
     def selectManualPath(self):
         Manualfile_path = fd.askopenfilename()
