@@ -186,11 +186,12 @@ def read_rest_api_tests(folder_path, return_df=True):
     Returns:
         pd.DataFrame or dict: Test names and corresponding statuses
     """
+    print(f"Loading api test files from {folder_path}")
     if isinstance(folder_path, str):
         folder_path = Path(folder_path)
 
     # Read all .txt files recursively in the folders
-    file_list = list(folder_path.glob("*/*/*.txt"))
+    file_list = [file_name for file_name in folder_path.rglob("*.txt") if "__MACOSX" not in str(file_name)]
 
     # Load in the data from each file, add to a single list
     data = []
@@ -233,14 +234,19 @@ def _read_group_by_method_txt(file_path, return_df=True):
         if len(line_data) > 2:
             print(f"found line with multiple '|' chars: {line}")
             line_data = "".join(line_data[:-1]) + [line_data[-1]]
-
+        
+        # Get relevant data for other columns
+        # 
+        base_folder_idx = [i for i, s in enumerate(file_path.parts) if "RestApiTests" in str(s)][0]
+        rc_num = [s for s in file_path.parts if "RC" in str(s) and len(str(s)) == 3][0]
+        
         # Store data in list
         data.append({
             'test_name':line_data[0],
             'status':line_data[1],
-            'rc': file_path.parts[-3],
-            'name': file_path.parts[-2],
-            'file_name': file_path.parts[-1]
+            'rc': rc_num,
+            'name': file_path.parts[4],
+            'file_name': str(file_path)
         })
 
     if return_df:
