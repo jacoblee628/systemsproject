@@ -18,12 +18,11 @@ def check_prd_has_srs(file_path, matrix_type):
     trace=load_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
-    trace = trace[trace.PRD != "N/A"]
-    trace = trace[trace.PRD != "n/a"]
+    trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]
     
     for val in trace['SRS ID']:
         val=str(val)
-        if not val.startswith("TC"):
+        if not val.startswith(srs_prefix):
             val = np.nan
     
     # Get number of unique SRS for each PRD
@@ -39,7 +38,6 @@ def check_prd_has_srs(file_path, matrix_type):
         return "Passed"
     else :
         return "Failed", invalid
-
     
     
 def check_srs_has_test(file_path, matrix_type):
