@@ -2,6 +2,12 @@ import read_write as rw
 import pandas as pd
 import numpy as np
 
+prd_prefix = "US"
+srs_prefix = "TC"
+
+obs_srs=pd.read_csv(file_path_srs)
+obs_srs_list=obs_srs["Formatted ID"].unique()
+
 def check_prd_has_srs(file_path, matrix_type):
     """check whether each prd has srs
     
@@ -57,25 +63,26 @@ def check_srs_has_test(file_path, matrix_type):
     trace=load_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
-    trace = trace[trace['SRS ID'] != "N/A"]
-    trace = trace[trace['SRS ID'] != "n/a"]
+    trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
     
-    trace = trace[trace['Test Name'] != "N/A"]
-    trace = trace[trace['Test Name'] != "n/a"]
-    
+    for val in trace['Test Name']:
+        val=str(val)
+        if not len(val) > 5:
+            val = np.nan
+
     # Get number of unique tests for each SRS
     group = trace.groupby('SRS ID')['Test Name'].nunique()
     num_unique = pd.DataFrame({'SRS ID':group.index, 'Test Name':group.values})
     
-    # Get df of rows where SRS exists but test does not
+    # Get df of rows where SRS exists but test doe not
     invalid = num_unique.loc[num_unique["Test Name"] == 0]
+    valid = num_unique.loc[num_unique["Test Name"] != 0]
     
-    # return pass/fail
+    # return trace matrix
     if invalid.shape[0] == 0 :
         return "Passed"
     else :
-        return "Failed", invalid    
-
+        return "Failed", invalid
     
     
 def check_srs_has_prd(file_path, matrix_type):
@@ -95,11 +102,12 @@ def check_srs_has_prd(file_path, matrix_type):
     trace=load_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
-    trace = trace[trace['SRS ID'] != "N/A"]
-    trace = trace[trace['SRS ID'] != "n/a"]
+    trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
     
-    trace = trace[trace['PRD'] != "N/A"]
-    trace = trace[trace['PRD'] != "n/a"]
+    for val in trace['PRD']:
+        val=str(val)
+        if not val.startswith(prd_prefix):
+            val = np.nan
     
     # Get number of unique PRD for each SRS
     group = trace.groupby('SRS ID')['PRD'].nunique()
@@ -107,12 +115,13 @@ def check_srs_has_prd(file_path, matrix_type):
     
     # Get df of rows where SRS exists but PRD does not
     invalid = num_unique.loc[num_unique["PRD"] == 0]
+    valid = num_unique.loc[num_unique["PRD"] != 0]
     
-    # return pass/fail
+    # return pass/fail and invalid srs
     if invalid.shape[0] == 0 :
         return "Passed"
     else :
-        return "Failed", invalid    
+        return "Failed", invalid  
     
 
 def check_srs_exists(file_path_trace, file_path_srs, matrix_type):
