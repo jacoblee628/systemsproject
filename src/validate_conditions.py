@@ -124,7 +124,7 @@ def check_srs_has_prd(file_path, matrix_type):
         return "Failed", invalid  
     
 
-def check_srs_exists(file_path_trace, file_path_srs, matrix_type):
+def check_srs_exists(file_path_trace, obs_srs_list, matrix_type):
     """check whether all srs referenced by tests exist
     
     Args:
@@ -142,6 +142,34 @@ def check_srs_exists(file_path_trace, file_path_srs, matrix_type):
     trace=load_trace(file_path_trace, matrix_type, return_df=True)
     
     trace["srs_list"] = trace["Test Name"]
+    
+    def get_req_list(string, prefix):
+        test_list = string.split()
+        req_list = []
+
+        for val in test_list:
+            if val.startswith(prefix):
+                req_list.append(val)
+        return req_list
+    
+    trace["srs_list"] = trace["srs_list"].apply(lambda row: get_req_list(row, srs_prefix))
+    
+    # Check if srs in obsolete list
+    passed = True
+    invalid = []
+    
+    for lst in trace["srs_list"]:
+        for val in lst:
+            if val in obs_srs_list:
+                passed = False
+                invalid.append(val)
+    
+    invalid = set(invalid)
+    
+    if passed:
+        return "Passed"
+    else:
+        return "Failed", invalid
     
     
 def check_prd_exists(file_path_trace, file_path_prd, matrix_type):
