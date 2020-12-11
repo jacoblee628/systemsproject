@@ -124,17 +124,61 @@ def check_srs_has_prd(file_path, matrix_type):
         return "Failed", invalid  
     
 
+def check_prd_refby_srs_exists(file_path_trace, active_prd_list, matrix_type):
+    """check whether all prd referenced by srs exist
+    
+    Args:
+        file_path_trace (String): path to the trace matrix
+        active_prd_list (List): list of active PRD
+        matrix_type (String): "CO" or "PSC"
+        
+    Returns:
+        String "Passed" if all prd exist
+        String "Failed" if there is an obsolete prd referenced
+        list of obsolete prd
+    """
+    
+    # Load trace matrix
+    trace=load_trace(file_path, matrix_type, return_df=True)
+     
+    # Get rid of n/a values
+    trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
+    trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]
+    
+    # Get unique PRD for each SRS
+    group = trace.groupby('SRS ID')['PRD'].unique()
+    unique_prd = pd.DataFrame({'SRS ID':group.index, 'PRD':group.values})
+    
+    # Get list of obsolete PRD
+    passed = True
+    invalid = []
+    
+    for lst in unique_prd["PRD"]:
+        for val in lst:
+            if val not in active_prd_list:
+                passed = False
+                invalid.append(val)
+    
+    invalid = set(invalid)
+
+    # return trace matrix
+    if invalid.shape[0] == 0 :
+        return "Passed"
+    else :
+        return "Failed", invalid
+    
+    
 def check_srs_exists(file_path_trace, obs_srs_list, matrix_type):
     """check whether all srs referenced by tests exist
     
     Args:
         file_path_trace (String): path to the trace matrix
-        file_path_srs (String): path to the csv of obsolete srs
+        obs_srs_list (List): list of obsolete SRS
         matrix_type (String): "CO" or "PSC"
         
     Returns:
         String "Passed" if all srs exist
-        Error message if there is an obsolete srs referenced
+        String "Failed" if there is an obsolete srs referenced
         list of obsolete srs
     """
     
@@ -170,7 +214,7 @@ def check_srs_exists(file_path_trace, obs_srs_list, matrix_type):
         return "Passed"
     else:
         return "Failed", invalid
-    
+   
     
 def check_prd_exists(file_path_trace, file_path_prd, matrix_type):
     """check whether all prd referenced by tests exist
