@@ -1,5 +1,6 @@
 import read_write as rw
 import pandas as pd
+import numpy as np
 
 def check_prd_has_srs(file_path, matrix_type):
     """check whether each prd has srs
@@ -9,20 +10,21 @@ def check_prd_has_srs(file_path, matrix_type):
         matrix_type (String): "CO" or "PSC"
         
     Returns:
-        String "Passed" if all prd has srs
         Error message if a prd does not have srs
-        df of prds without srs
+        list of prds without srs
     """
     
     # Load trace matrix
-    trace=rw.read_trace(file_path, matrix_type, return_df=True)
+    trace=load_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
     trace = trace[trace.PRD != "N/A"]
     trace = trace[trace.PRD != "n/a"]
     
-    trace = trace[trace['SRS ID'] != "N/A"]
-    trace = trace[trace['SRS ID'] != "n/a"]
+    for val in trace['SRS ID']:
+        val=str(val)
+        if not val.startswith("TC"):
+            val = np.nan
     
     # Get number of unique SRS for each PRD
     group = trace.groupby('PRD')['SRS ID'].nunique()
@@ -30,8 +32,9 @@ def check_prd_has_srs(file_path, matrix_type):
     
     # Get df of rows where PRD exists but SRS does not
     invalid = num_unique.loc[num_unique["SRS ID"] == 0]
+    valid = num_unique.loc[num_unique["SRS ID"] != 0]
     
-    # return pass/fail
+    # return trace matrix
     if invalid.shape[0] == 0 :
         return "Passed"
     else :
