@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 
-def check_prd_has_srs(trace, prd_prefix, srs_prefix):
+def check_prd_has_srs(file_path, matrix_type):
     """check whether each prd has srs
     
     Args:
