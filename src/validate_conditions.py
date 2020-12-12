@@ -267,3 +267,57 @@ def check_prd_exists(file_path_trace, active_prd_list, matrix_type):
         return "Passed"
     else:
         return "Failed", invalid
+    
+    
+def check_tests_traced_to_reqs(file_path, matrix_type):
+    """check whether each test has been traced to all requirements they reference
+    
+    Args:
+        file_path (String): path to the trace matrix
+        matrix_type (String): "CO" or "PSC"
+        
+    Returns:
+        String "Passed" if all tests have been traced to all requirements
+        Error message if a test hasn't been traced to all requirements
+        list of tests not traced
+    """
+    
+    # Load trace matrix
+    trace=load_trace(file_path, matrix_type, return_df=True)
+    
+    trace["srs_list"] = trace["Test Name"]
+    trace["prd_list"] = trace["Test Name"]
+    
+    
+    def get_req_list(string, prefix):
+        test_list = string.split()
+        req_list = []
+
+        for val in test_list:
+            if val.startswith(prefix):
+                req_list.append(val)
+        return req_list
+    
+    
+    trace["srs_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, srs_prefix))
+    trace["prd_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, prd_prefix))
+    
+    Requirements_met = True
+    not_met = []
+    
+    for index, row in trace.iterrows():
+        for val in row["srs_list"]:
+            if ((trace["SRS ID"] == val) & (trace["Test Name"] == row["Test Name"])).any() == False:
+                Requirements_met = False
+                not_met.append(row["Test Name"])
+        for val in row["prd_list"]:
+            if ((trace["PRD"] == val) & (trace["Test Name"] == row["Test Name"])).any() == False:
+                Requirements_met = False
+                not_met.append(row["Test Name"])
+    
+        
+    if Requirements_met == False:
+        return "Failed", set(not_met)
+    else:
+        return "Passed"
+        
