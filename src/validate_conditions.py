@@ -9,9 +9,9 @@ obs_srs_file_path = ""
 obs_srs=pd.read_csv(obs_srs_file_path)
 obs_srs_list=obs_srs["Formatted ID"].unique()
 
-active_prd_path = ""
-active_prd=pd.read_csv(active_prd_path)
-active_prd_list=active_prd["ID"].unique()
+active_prd = pd.read_excel("1.33 PRD.xlsx")
+active_prd_list = active_prd["ID"].unique()
+active_prd_list = active_prd_list[~pd.isnull(active_prd_list)]
 
 def check_prd_has_srs(file_path, matrix_type):
     """check whether each prd has srs
