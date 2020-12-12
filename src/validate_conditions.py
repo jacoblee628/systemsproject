@@ -5,8 +5,13 @@ import numpy as np
 prd_prefix = "US"
 srs_prefix = "TC"
 
-obs_srs=pd.read_csv(file_path_srs)
+obs_srs_file_path = ""
+obs_srs=pd.read_csv(obs_srs_file_path)
 obs_srs_list=obs_srs["Formatted ID"].unique()
+
+active_prd_path = ""
+active_prd=pd.read_csv(active_prd_path)
+active_prd_list=active_prd["ID"].unique()
 
 def check_prd_has_srs(file_path, matrix_type):
     """check whether each prd has srs
@@ -196,7 +201,7 @@ def check_srs_exists(file_path_trace, obs_srs_list, matrix_type):
                 req_list.append(val)
         return req_list
     
-    trace["srs_list"] = trace["srs_list"].apply(lambda row: get_req_list(row, srs_prefix))
+    trace["srs_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, srs_prefix))
     
     # Check if srs in obsolete list
     passed = True
@@ -244,7 +249,7 @@ def check_prd_exists(file_path_trace, active_prd_list, matrix_type):
                 req_list.append(val)
         return req_list
     
-    trace["prd_list"] = trace["prd_list"].apply(lambda row: get_req_list(row, prd_prefix))
+    trace["prd_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, prd_prefix))
     
     # Check if prd not in active list
     passed = True
