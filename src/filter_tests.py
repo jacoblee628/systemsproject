@@ -44,7 +44,7 @@ def check_rest_api(folder_path):
     # Return dataframe of valid and invalid tests
     return valid_rest_api_tests, invalid_rest_api_tests
 
-def check_performance_Tests(file_path):
+def check_performance_tests(file_path):
     """filter the valid and invalid automated tests
     
     Args:
@@ -57,15 +57,15 @@ def check_performance_Tests(file_path):
     performance_tests=rw.read_performance_test_results_by_tc(file_path, return_df=True)
     
     # Check test status and write results in valid_performance_tests
-    valid_performance_tests=performance_tests[(performance_tests['status']=='PASS') | (performance_tests['status']=='FAIL')]
+    valid_performance_tests=performance_tests[(performance_tests['PASS/FAIL']=='PASS') | (performance_tests['PASS/FAIL']=='FAIL')]
     
     # Check test status and write results in invalid_performance_tests
-    invalid_performance_tests=performance_tests[(performance_tests['status']!='PASS') & (performance_tests['status']!='FAIL')]
+    invalid_performance_tests=performance_tests[(performance_tests['PASS/FAIL']!='PASS') & (performance_tests['PASS/FAIL']!='FAIL')]
     
     # Return dataframe of valid and invalid tests
     return valid_performance_tests, invalid_performance_tests
 
-def check_component_Tests(file_path):
+def check_component_tests(file_path):
     """filter the valid and invalid automated tests
     
     Args:

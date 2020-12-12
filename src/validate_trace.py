@@ -2,18 +2,8 @@ import read_write as rw
 import pandas as pd
 import numpy as np
 
-prd_prefix = "US"
-srs_prefix = "TC"
 
-obs_srs_file_path = ""
-obs_srs=pd.read_csv(obs_srs_file_path)
-obs_srs_list=obs_srs["Formatted ID"].unique()
-
-active_prd_path = ""
-active_prd=pd.read_csv(active_prd_path)
-active_prd_list=active_prd["ID"].unique()
-
-def check_prd_has_srs(file_path, matrix_type):
+def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     """check whether each prd has srs
     
     Args:
@@ -26,7 +16,7 @@ def check_prd_has_srs(file_path, matrix_type):
     """
     
     # Load trace matrix
-    trace=load_trace(file_path, matrix_type, return_df=True)
+    # trace=rw.read_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
     trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]
@@ -45,13 +35,14 @@ def check_prd_has_srs(file_path, matrix_type):
     valid = num_unique.loc[num_unique["SRS ID"] != 0]
     
     # return trace matrix
-    if invalid.shape[0] == 0 :
-        return "Passed"
-    else :
-        return "Failed", invalid
+    # if len(invalid) == 0:
+    #     return "Passed", valid
+    # else:
+    #     return "Failed", invalid
+    return valid, invalid
     
     
-def check_srs_has_test(file_path, matrix_type):
+def check_srs_has_test(trace, prd_prefix, srs_prefix):
     """check whether each srs has a test
     
     Args:
@@ -65,7 +56,7 @@ def check_srs_has_test(file_path, matrix_type):
     """
     
     # Load trace matrix
-    trace=load_trace(file_path, matrix_type, return_df=True)
+    # trace=load_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
@@ -84,13 +75,14 @@ def check_srs_has_test(file_path, matrix_type):
     valid = num_unique.loc[num_unique["Test Name"] != 0]
     
     # return trace matrix
-    if invalid.shape[0] == 0 :
-        return "Passed"
-    else :
-        return "Failed", invalid
+    # if len(invalid) == 0:
+    #     return "Passed", None
+    # else:
+    #     return "Failed", invalid
+    return valid, invalid
     
     
-def check_srs_has_prd(file_path, matrix_type):
+def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     """check whether each srs has prd
     
     Args:
@@ -104,7 +96,7 @@ def check_srs_has_prd(file_path, matrix_type):
     """
     
     # Load trace matrix
-    trace=load_trace(file_path, matrix_type, return_df=True)
+    # trace=load_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
@@ -123,13 +115,14 @@ def check_srs_has_prd(file_path, matrix_type):
     valid = num_unique.loc[num_unique["PRD"] != 0]
     
     # return pass/fail and invalid srs
-    if invalid.shape[0] == 0 :
-        return "Passed"
-    else :
-        return "Failed", invalid  
+    # if len(invalid) == 0:
+    #     return "Passed", None
+    # else:
+    #     return "Failed", invalid  
+    return valid, invalid
     
 
-def check_prd_refby_srs_exists(file_path_trace, active_prd_list, matrix_type):
+def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     """check whether all prd referenced by srs exist
     
     Args:
@@ -144,7 +137,7 @@ def check_prd_refby_srs_exists(file_path_trace, active_prd_list, matrix_type):
     """
     
     # Load trace matrix
-    trace=load_trace(file_path, matrix_type, return_df=True)
+    # trace=load_trace(file_path, matrix_type, return_df=True)
      
     # Get rid of n/a values
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
@@ -155,25 +148,24 @@ def check_prd_refby_srs_exists(file_path_trace, active_prd_list, matrix_type):
     unique_prd = pd.DataFrame({'SRS ID':group.index, 'PRD':group.values})
     
     # Get list of obsolete PRD
-    passed = True
     invalid = []
     
     for lst in unique_prd["PRD"]:
         for val in lst:
             if val not in active_prd_list:
-                passed = False
                 invalid.append(val)
     
     invalid = set(invalid)
 
     # return trace matrix
-    if invalid.shape[0] == 0 :
-        return "Passed"
-    else :
+    if len(invalid) == 0:
+        return "Passed", None
+    else:
         return "Failed", invalid
+    # return valid, invalid
     
     
-def check_srs_exists(file_path_trace, obs_srs_list, matrix_type):
+def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     """check whether all srs referenced by tests exist
     
     Args:
@@ -188,7 +180,7 @@ def check_srs_exists(file_path_trace, obs_srs_list, matrix_type):
     """
     
     # Load trace matrix
-    trace=load_trace(file_path_trace, matrix_type, return_df=True)
+    # trace=load_trace(file_path_trace, matrix_type, return_df=True)
     
     trace["srs_list"] = trace["Test Name"]
     
@@ -216,12 +208,12 @@ def check_srs_exists(file_path_trace, obs_srs_list, matrix_type):
     invalid = set(invalid)
     
     if passed:
-        return "Passed"
+        return "Passed", None
     else:
         return "Failed", invalid
    
     
-def check_prd_exists(file_path_trace, active_prd_list, matrix_type):
+def check_prd_exists(trace, active_prd_list):
     """check whether all srs referenced by tests exist
     
     Args:
@@ -236,7 +228,7 @@ def check_prd_exists(file_path_trace, active_prd_list, matrix_type):
     """
     
     # Load trace matrix
-    trace=load_trace(file_path_trace, matrix_type, return_df=True)
+    # trace=load_trace(file_path_trace, matrix_type, return_df=True)
     
     trace["prd_list"] = trace["Test Name"]
     
@@ -264,12 +256,12 @@ def check_prd_exists(file_path_trace, active_prd_list, matrix_type):
     invalid = set(invalid)
     
     if passed:
-        return "Passed"
+        return "Passed", None
     else:
         return "Failed", invalid
     
     
-def check_tests_traced_to_reqs(file_path, matrix_type):
+def check_tests_traced_to_reqs(trace, prd_prefix, srs_prefix):
     """check whether each test has been traced to all requirements they reference
     
     Args:
@@ -283,7 +275,7 @@ def check_tests_traced_to_reqs(file_path, matrix_type):
     """
     
     # Load trace matrix
-    trace=load_trace(file_path, matrix_type, return_df=True)
+    # trace=load_trace(file_path, matrix_type, return_df=True)
     
     trace["srs_list"] = trace["Test Name"]
     trace["prd_list"] = trace["Test Name"]
@@ -302,22 +294,22 @@ def check_tests_traced_to_reqs(file_path, matrix_type):
     trace["srs_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, srs_prefix))
     trace["prd_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, prd_prefix))
     
-    Requirements_met = True
+    requirements_met = True
     not_met = []
     
     for index, row in trace.iterrows():
         for val in row["srs_list"]:
             if ((trace["SRS ID"] == val) & (trace["Test Name"] == row["Test Name"])).any() == False:
-                Requirements_met = False
+                requirements_met = False
                 not_met.append(row["Test Name"])
         for val in row["prd_list"]:
             if ((trace["PRD"] == val) & (trace["Test Name"] == row["Test Name"])).any() == False:
-                Requirements_met = False
+                requirements_met = False
                 not_met.append(row["Test Name"])
     
         
-    if Requirements_met == False:
+    if requirements_met == False:
         return "Failed", set(not_met)
     else:
-        return "Passed"
+        return "Passed", None
         

@@ -23,7 +23,7 @@ def read_trace(file_path, matrix_type, return_df=True):
     # Some asserts to make sure inputs are valid
     assert ".xlsx" in file_path, "Trace file must be a .xlsx file"
     matrix_type = matrix_type.upper()
-    assert matrix_type in ["CO", "PSC"], "Trace matrix type must be either 'CO' or 'PSC'"
+    assert matrix_type in ["CO", "PSC"], f"Trace matrix type must be either 'CO' or 'PSC'\nCurrent type: {matrix_type}"
 
     # Load in the actual excel file
     wb = pyxl.load_workbook(file_path)
@@ -118,7 +118,7 @@ def load_msgateway_results(file_path, return_df=True):
     test_names = []
     for p in document.paragraphs:
         if "Test:" in p.text and "\t" not in p.text:
-            test_names.append(p.text)
+            test_names.append(p.text.replace("Test: ", ""))
 
     statuses = []
     for table in document.tables:
@@ -126,7 +126,7 @@ def load_msgateway_results(file_path, return_df=True):
             statuses.append(table.cell(1,0).text)
 
     # Make sure same number of test names and statuses
-    assert len(test_names) == len(statuses), "Error: Couldn't parse same number of test names and test statuses.\n# test names: {len(test_names)}, # statuses: {len(statuses)}"
+    assert len(test_names) == len(statuses), f"Error: Couldn't parse same number of test names and test statuses.\n# test names: {len(test_names)}, # statuses: {len(statuses)}"
 
     # Output as either pandas dataframe or dict, depending on return_df setting.
     data = {"test_name":test_names, "status":statuses}
@@ -236,16 +236,15 @@ def _read_group_by_method_txt(file_path, return_df=True):
             line_data = "".join(line_data[:-1]) + [line_data[-1]]
         
         # Get relevant data for other columns
-        # 
         base_folder_idx = [i for i, s in enumerate(file_path.parts) if "RestApiTests" in str(s)][0]
-        rc_num = [s for s in file_path.parts if "RC" in str(s) and len(str(s)) == 3][0]
+        # rc_num = [s for s in file_path.parts if "RC" in str(s) and len(str(s)) == 3][0]
         
         # Store data in list
         data.append({
             'test_name':line_data[0],
             'status':line_data[1],
-            'rc': rc_num,
-            'name': file_path.parts[4],
+            'rc': file_path.parts[base_folder_idx + 1],
+            'name': file_path.parts[base_folder_idx + 2],
             'file_name': str(file_path)
         })
 
