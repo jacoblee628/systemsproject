@@ -216,17 +216,17 @@ def check_srs_exists(file_path_trace, obs_srs_list, matrix_type):
         return "Failed", invalid
    
     
-def check_prd_exists(file_path_trace, file_path_prd, matrix_type):
-    """check whether all prd referenced by tests exist
+def check_prd_exists(file_path_trace, active_prd_list, matrix_type):
+    """check whether all srs referenced by tests exist
     
     Args:
         file_path_trace (String): path to the trace matrix
-        file_path_prd (String): path to the csv of obsolete prd
+        active_prd_list (List): list of active prd
         matrix_type (String): "CO" or "PSC"
         
     Returns:
         String "Passed" if all prd exist
-        Error message if there is an obsolete prd referenced
+        String "Failed" if there is an obsolete prd referenced
         list of obsolete prd
     """
     
@@ -244,50 +244,15 @@ def check_prd_exists(file_path_trace, file_path_prd, matrix_type):
                 req_list.append(val)
         return req_list
     
-    trace["prd_list"] = trace["prd_list"].apply(lambda row: get_req_list(row, "US"))
+    trace["prd_list"] = trace["prd_list"].apply(lambda row: get_req_list(row, prd_prefix))
     
-    #load obsolete csv
-    obs_prd=pd.read_csv(file_path_prd)
-    obs_prd_list=obs_prd["Formatted ID"].unique()
-    
-    
+    # Check if prd not in active list
     passed = True
     invalid = []
     
     for lst in trace["prd_list"]:
         for val in lst:
-            if val in obs_prd_list:
-                passed = False
-                invalid.append(val)
-    
-    invalid = set(invalid)
-    
-    if passed:
-        return "Passed"
-    else:
-        return "Failed", invalid    
-    def get_req_list(string, prefix):
-        test_list = string.split()
-        req_list = []
-
-        for val in test_list:
-            if val.startswith(prefix):
-                req_list.append(val)
-        return req_list
-    
-    trace["srs_list"] = trace["srs_list"].apply(lambda row: get_req_list(row, "TC"))
-    
-    #load obsolete csv
-    obs_srs=pd.read_csv(file_path_srs)
-    obs_srs_list=obs_srs["Formatted ID"].unique()
-    
-    
-    passed = True
-    invalid = []
-    
-    for lst in trace["srs_list"]:
-        for val in lst:
-            if val in obs_srs_list:
+            if val not in active_prd_list:
                 passed = False
                 invalid.append(val)
     
