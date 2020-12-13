@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 
-def check_prd_has_srs(file_path, matrix_type):
+def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     """check whether each prd has srs
     
     Args:
@@ -14,9 +14,6 @@ def check_prd_has_srs(file_path, matrix_type):
         Error message if a prd does not have srs
         list of prds without srs
     """
-    
-    # Load trace matrix
-    # trace=rw.read_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
     trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]
@@ -55,9 +52,6 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
         df of srs without tests
     """
     
-    # Load trace matrix
-    # trace=load_trace(file_path, matrix_type, return_df=True)
-    
     # Get rid of n/a values
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
     
@@ -94,9 +88,6 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
         Error message if a srs does not have a prd
         list of srs without prd
     """
-    
-    # Load trace matrix
-    # trace=load_trace(file_path, matrix_type, return_df=True)
     
     # Get rid of n/a values
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
@@ -136,9 +127,6 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
         list of obsolete prd
     """
     
-    # Load trace matrix
-    # trace=load_trace(file_path, matrix_type, return_df=True)
-     
     # Get rid of n/a values
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
     trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]
@@ -158,11 +146,11 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     invalid = set(invalid)
 
     # return trace matrix
-    if len(invalid) == 0:
-        return "Passed", None
-    else:
-        return "Failed", invalid
-    # return valid, invalid
+    # if len(invalid) == 0:
+        # return "Passed", None
+    # else:
+        # return "Failed", invalid
+    return valid, invalid
     
     
 def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
@@ -178,9 +166,6 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
         String "Failed" if there is an obsolete srs referenced
         list of obsolete srs
     """
-    
-    # Load trace matrix
-    # trace=load_trace(file_path_trace, matrix_type, return_df=True)
     
     trace["srs_list"] = trace["Test Name"]
     
@@ -227,9 +212,6 @@ def check_prd_exists(trace, active_prd_list):
         list of obsolete prd
     """
     
-    # Load trace matrix
-    # trace=load_trace(file_path_trace, matrix_type, return_df=True)
-    
     trace["prd_list"] = trace["Test Name"]
     
     def get_req_list(string, prefix):
@@ -273,9 +255,6 @@ def check_tests_traced_to_reqs(trace, prd_prefix, srs_prefix):
         Error message if a test hasn't been traced to all requirements
         list of tests not traced
     """
-    
-    # Load trace matrix
-    # trace=load_trace(file_path, matrix_type, return_df=True)
     
     trace["srs_list"] = trace["Test Name"]
     trace["prd_list"] = trace["Test Name"]

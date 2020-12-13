@@ -1,10 +1,11 @@
+import pathlib
+from pathlib import Path
+
 import docx
 import openpyxl as pyxl
 import pandas as pd
 from docx import Document
 from openpyxl import Workbook
-import pathlib
-from pathlib import Path
 
 
 def read_trace(file_path, matrix_type, return_df=True):
@@ -237,7 +238,6 @@ def _read_group_by_method_txt(file_path, return_df=True):
         
         # Get relevant data for other columns
         base_folder_idx = [i for i, s in enumerate(file_path.parts) if "RestApiTests" in str(s)][0]
-        # rc_num = [s for s in file_path.parts if "RC" in str(s) and len(str(s)) == 3][0]
         
         # Store data in list
         data.append({

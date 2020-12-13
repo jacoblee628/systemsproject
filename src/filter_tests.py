@@ -40,7 +40,7 @@ def check_rest_api(folder_path):
     
     # Check test status and write results in invalid_rest_api_tests
     invalid_rest_api_tests=rest_api_tests[(rest_api_tests['status']!='passed') & (rest_api_tests['status']!='failed')]
-    
+        
     # Return dataframe of valid and invalid tests
     return valid_rest_api_tests, invalid_rest_api_tests
 

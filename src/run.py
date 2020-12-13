@@ -4,7 +4,6 @@ if __name__ == "__main__":
     """Code that's run when run.sh or python src/run.py is called"""
     print("Running script")
     
-    
     prd_prefix = "US"
     srs_prefix = "TC"
 
@@ -18,7 +17,7 @@ if __name__ == "__main__":
     
     # Load trace
     trace_path = "../data/ER 2228015 v43 ATT1 Sapphire 1.33 Trace Matrix.xlsx"
-    
+    prev_trace_path = "../data/ER 2228015 v42 ATT1 Sapphire 1.32 Trace Matrix.xlsx"
     
     # 
     
