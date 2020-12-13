@@ -140,8 +140,14 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     
     for lst in unique_prd["PRD"]:
         for val in lst:
-            if val not in active_prd_list:
-                invalid.append(val)
+            val = val.split()
+            for x in val:
+                x = re.sub(r'[^\w\s]','',x)
+                x = re.sub( r"([A-Z][A-Z])", r" \1", x).split()
+                for y in x:
+                    if y not in active_prd_list:
+                        passed = False
+                        invalid.append(y)
     
     invalid = set(invalid)
 
