@@ -207,10 +207,10 @@ def read_rest_api_tests(folder_path, return_df=True):
 def _read_group_by_method_txt(file_path, return_df=True):
     """Reads in a single rest api automatic test .txt file.
 
-    Mostly just for the `read_rest_api_tests()` method. Usually won't need to call
+    Mostly just for the `read_rest_api_tests()` method. Usually won't need to call yourself
 
     Args:
-        folder_path (String): path to the main RestApiTests folder.
+        file_path (String): path to the .txt file
         return_df (bool, optional): If true, returns pandas dataframe. Else dict. Defaults to True.
 
     Returns:
@@ -252,3 +252,20 @@ def _read_group_by_method_txt(file_path, return_df=True):
         return pd.DataFrame(data)
     else:
         return data
+
+def read_rally_output(file_path, return_df=True):
+    """Reads in an .csv that's outputted directly from a Rally query.
+
+    Args:
+        file_path (String): path to the .csv file
+        return_df (bool, optional): If true, returns pandas dataframe. Else dict. Defaults to True.
+
+    Returns:
+        pd.DataFrame or dict: Test names and corresponding statuses
+    """
+    # As it's unformatted, can just load using existing pandas method
+    df = pd.read_csv(file_path) 
+    if return_df:
+        return df
+    else:
+        return df.to_dict('records')
