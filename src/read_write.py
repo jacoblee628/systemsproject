@@ -7,6 +7,8 @@ import pandas as pd
 from docx import Document
 from openpyxl import Workbook
 
+import re
+
 
 def read_trace(file_path, matrix_type, return_df=True):
     """Loads trace matrix .xlsx file and extracts data
@@ -22,7 +24,6 @@ def read_trace(file_path, matrix_type, return_df=True):
     print(f"Loading {matrix_type} from: {file_path}")
 
     # Some asserts to make sure inputs are valid
-    assert ".xlsx" in file_path, "Trace file must be a .xlsx file"
     matrix_type = matrix_type.upper()
     assert matrix_type in ["CO", "PSC"], f"Trace matrix type must be either 'CO' or 'PSC'\nCurrent type: {matrix_type}"
 
@@ -69,8 +70,6 @@ def read_manual_tests(file_path, return_df=True):
     Returns:
         pd.DataFrame or dict: Test names and corresponding statuses
     """
-    # Make sure file is in docx format, not doc
-    assert ".docx" in file_path, "File must be converted from .doc to .docx. Do this in Microsoft Word by selecting 'File -> Save As -> .docx'"
 
     # Open the file and read with python-docx package
     with open(file_path, 'rb') as f:
@@ -91,14 +90,19 @@ def read_manual_tests(file_path, return_df=True):
     # # Make sure same number of test names and statuses
     # assert len(test_names) == len(statuses), "Error: Couldn't parse same number of test names and test statuses.\n# test names: {len(test_names)}, # statuses: {len(statuses)}"
 
+    # make a dataframe for outputting
+    df = pd.DataFrame({"test_name":test_names, "status":statuses})
+    
+    # Also add the V&V Test Report info by extracting it from file name
+    file_name = Path(file_path).stem
+    v_v = re.findall("ER[0-9]+ v[0-9]+", file_name)[0].replace("ER", "")
+    df["V&V Test Report"] = v_v
 
     # Output as either pandas dataframe or dict, depending on return_df setting.
-    data = {"test_name":test_names, "status":statuses}
-
     if return_df:
-        return pd.DataFrame(data)
+        return df
     else:
-        return data
+        return df.to_dict('records')
 
 
 def read_msgateway_results(file_path, return_df=True):
@@ -175,7 +179,7 @@ def read_performance_test_results_by_tc(file_path, return_df=True):
 
 def read_rest_api_tests(folder_path, return_df=True):
     """Reads in all the rest api automatic test .txt files.
-
+    
     Will recursively go through the folders and read in .txt files.
     Make sure everything is unzipped first; in future can add functionality to
     unzip automatically if needed.
@@ -190,19 +194,30 @@ def read_rest_api_tests(folder_path, return_df=True):
     print(f"Loading api test files from {folder_path}")
     if isinstance(folder_path, str):
         folder_path = Path(folder_path)
+        
 
     # Read all .txt files recursively in the folders
     file_list = [file_name for file_name in folder_path.rglob("*.txt") if "__MACOSX" not in str(file_name)]
-
+    
     # Load in the data from each file, add to a single list
     data = []
     for file_name in file_list:
         data.extend(_read_group_by_method_txt(file_name, return_df=False))
 
+    
+    # make a dataframe for outputting
+    df = pd.DataFrame(data)
+    
+    # Also add the V&V Test Report info by extracting it from file name
+    file_name = Path(file_path).stem
+    v_v = re.findall("ER[0-9]+ v[0-9]+", file_name)[0].replace("ER", "")
+    df["V&V Test Report"] = v_v
+
+    # Output as either pandas dataframe or dict, depending on return_df setting.
     if return_df:
-        return pd.DataFrame(data)
+        return df
     else:
-        return data
+        return df.to_dict('records')
 
 
 def _read_group_by_method_txt(file_path, return_df=True):
