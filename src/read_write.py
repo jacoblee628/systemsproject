@@ -101,7 +101,7 @@ def read_manual_tests(file_path, return_df=True):
         return data
 
 
-def load_msgateway_results(file_path, return_df=True):
+def read_msgateway_results(file_path, return_df=True):
     """Loads in the test statuses from the automatic MSGateway tests document. Document must be in .docx format.
 
     Args:
@@ -203,6 +203,7 @@ def read_rest_api_tests(folder_path, return_df=True):
         return pd.DataFrame(data)
     else:
         return data
+
 
 def _read_group_by_method_txt(file_path, return_df=True):
     """Reads in a single rest api automatic test .txt file.

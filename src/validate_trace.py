@@ -1,6 +1,9 @@
-import read_write as rw
-import pandas as pd
+import re
+
 import numpy as np
+import pandas as pd
+
+import read_write as rw
 
 
 def check_prd_has_srs(trace, prd_prefix, srs_prefix):
@@ -31,11 +34,6 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     invalid = num_unique.loc[num_unique["SRS ID"] == 0]
     valid = num_unique.loc[num_unique["SRS ID"] != 0]
     
-    # return trace matrix
-    # if len(invalid) == 0:
-    #     return "Passed", valid
-    # else:
-    #     return "Failed", invalid
     return valid, invalid
     
     
@@ -56,7 +54,7 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
     
     for val in trace['Test Name']:
-        val=str(val)
+        val = str(val)
         if not len(val) > 5:
             val = np.nan
 
@@ -67,12 +65,7 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     # Get df of rows where SRS exists but test doe not
     invalid = num_unique.loc[num_unique["Test Name"] == 0]
     valid = num_unique.loc[num_unique["Test Name"] != 0]
-    
-    # return trace matrix
-    # if len(invalid) == 0:
-    #     return "Passed", None
-    # else:
-    #     return "Failed", invalid
+
     return valid, invalid
     
     
@@ -104,12 +97,7 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     # Get df of rows where SRS exists but PRD does not
     invalid = num_unique.loc[num_unique["PRD"] == 0]
     valid = num_unique.loc[num_unique["PRD"] != 0]
-    
-    # return pass/fail and invalid srs
-    # if len(invalid) == 0:
-    #     return "Passed", None
-    # else:
-    #     return "Failed", invalid  
+
     return valid, invalid
     
 
@@ -137,6 +125,7 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     
     # Get list of obsolete PRD
     invalid = []
+    valid = []
     
     for lst in unique_prd["PRD"]:
         for val in lst:
@@ -146,16 +135,12 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
                 x = re.sub( r"([A-Z][A-Z])", r" \1", x).split()
                 for y in x:
                     if y not in active_prd_list:
-                        passed = False
                         invalid.append(y)
+                    else:
+                        valid.append(y)
     
-    invalid = set(invalid)
-
-    # return trace matrix
-    # if len(invalid) == 0:
-        # return "Passed", None
-    # else:
-        # return "Failed", invalid
+    # invalid = set(invalid)
+    # valid = set(valid)
     return valid, invalid
     
     
@@ -187,21 +172,20 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     trace["srs_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, srs_prefix))
     
     # Check if srs in obsolete list
-    passed = True
     invalid = []
+    valid = []
     
     for lst in trace["srs_list"]:
         for val in lst:
             if val in obs_srs_list:
-                passed = False
                 invalid.append(val)
+            else:
+                valid.append(val)
     
     invalid = set(invalid)
+    valid = set(valid)
     
-    if passed:
-        return "Passed", None
-    else:
-        return "Failed", invalid
+    return valid, invalid
    
     
 def check_prd_exists(trace, active_prd_list):
@@ -232,21 +216,17 @@ def check_prd_exists(trace, active_prd_list):
     trace["prd_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, prd_prefix))
     
     # Check if prd not in active list
-    passed = True
     invalid = []
+    valid = []
     
     for lst in trace["prd_list"]:
         for val in lst:
             if val not in active_prd_list:
-                passed = False
                 invalid.append(val)
+            else:
+                valid.append(val)
     
-    invalid = set(invalid)
-    
-    if passed:
-        return "Passed", None
-    else:
-        return "Failed", invalid
+    return set(valid), set(invalid)
     
     
 def check_tests_traced_to_reqs(trace, prd_prefix, srs_prefix):
@@ -279,22 +259,22 @@ def check_tests_traced_to_reqs(trace, prd_prefix, srs_prefix):
     trace["srs_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, srs_prefix))
     trace["prd_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, prd_prefix))
     
-    requirements_met = True
-    not_met = []
+    invalid = []
+    valid = []
     
     for index, row in trace.iterrows():
         for val in row["srs_list"]:
             if ((trace["SRS ID"] == val) & (trace["Test Name"] == row["Test Name"])).any() == False:
-                requirements_met = False
-                not_met.append(row["Test Name"])
+                invalid.append(row["Test Name"])
+            else:
+                valid.append(row["Test Name"])
+
         for val in row["prd_list"]:
             if ((trace["PRD"] == val) & (trace["Test Name"] == row["Test Name"])).any() == False:
-                requirements_met = False
-                not_met.append(row["Test Name"])
+                invalid.append(row["Test Name"])
+            else:
+                valid.append(row["Test Name"])
     
         
-    if requirements_met == False:
-        return "Failed", set(not_met)
-    else:
-        return "Passed", None
+    return set(valid), set(invalid)
         
