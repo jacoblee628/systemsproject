@@ -169,6 +169,11 @@ def read_performance_test_results_by_tc(file_path, return_df=True):
         contents.append(row)
 
     df = pd.DataFrame(contents[1:], columns=contents[0])
+    
+    # Format to be a bit more similar to other datasets    
+    df = df.rename({"PASS/FAIL": "Test Status"}, axis=1)
+    df["Test Status"] = df["Test Status"].replace("PASS", "Passed").replace("FAIL", "Failed")
+
 
     # Return pandas dataframe if specified, otherwise return a list of dicts
     if return_df:
@@ -260,13 +265,13 @@ def _read_group_by_method_txt(file_path, return_df=True):
         
         # Store data in list
         data.append({
-            'test_name':line_data[0],
-            'status':line_data[1].lower().capitalize(),
-            'version_num': file_path.parts[base_folder_idx - 1],
-            'v_v': v_v,
-            'rc': file_path.parts[base_folder_idx + 1],
-            'name': file_path.parts[base_folder_idx + 2],
-            'file_name': str(file_path)
+            'Test Name':line_data[0],
+            'Test Status':line_data[1].lower().capitalize(),
+            'Release': file_path.parts[base_folder_idx - 1],
+            'V&V Test Report': v_v,
+            'RC': file_path.parts[base_folder_idx + 1],
+            'Owner': file_path.parts[base_folder_idx + 2],
+            'File Path': str(file_path)
         })
 
     if return_df:
@@ -370,13 +375,13 @@ def _read_rx_txt(file_path, return_df=True):
         
         # Store data in list
         data.append({
-            'test_name':line_data[0],
-            'status':line_data[1].lower().capitalize(),
-            'version_num': file_path.parts[base_folder_idx - 1],
-            'v_v': v_v,
-            'rc': file_path.parts[base_folder_idx + 1],
-            'name': file_path.parts[base_folder_idx + 2],
-            'file_name': str(file_path)
+            'Test Name':line_data[0],
+            'Test Status':line_data[1].lower().capitalize(),
+            'Release': file_path.parts[base_folder_idx - 1],
+            'V&V Test Report': v_v,
+            'RC': file_path.parts[base_folder_idx + 1],
+            'Owner': file_path.parts[base_folder_idx + 2],
+            'File Path': str(file_path)
         })
 
     if return_df:

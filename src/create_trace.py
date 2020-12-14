@@ -24,7 +24,7 @@ def create_trace(folder_path, version_num):
     # -------------
     # Rest API tests
     # Note: "/" on a pathlib.Path allows navigating into child folders
-    rest_api_df = rw.read_rest_api_tests(version_path / "RestApiTests") 
+    rest_api_df = rw.read_rest_api_tests(version_path / "RestApiTests")
     
     # Rx tests
     rx_df = rw.read_rx_tests(version_path / "Rx")
