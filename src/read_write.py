@@ -185,7 +185,7 @@ def read_rest_api_tests(folder_path, return_df=True):
     unzip automatically if needed.
 
     Args:
-        folder_path (String): path to the main RestApiTests folder.
+        folder_path (String or pathlib.Path): path to the main RestApiTests folder.
         return_df (bool, optional): If true, returns pandas dataframe. Else dict. Defaults to True.
 
     Returns:
@@ -194,7 +194,6 @@ def read_rest_api_tests(folder_path, return_df=True):
     print(f"Loading api test files from {folder_path}")
     if isinstance(folder_path, str):
         folder_path = Path(folder_path)
-        
 
     # Read all .txt files recursively in the folders
     file_list = [file_name for file_name in folder_path.rglob("*.txt") if "__MACOSX" not in str(file_name)]
@@ -204,15 +203,9 @@ def read_rest_api_tests(folder_path, return_df=True):
     for file_name in file_list:
         data.extend(_read_group_by_method_txt(file_name, return_df=False))
 
-    
     # make a dataframe for outputting
     df = pd.DataFrame(data)
     
-    # Also add the V&V Test Report info by extracting it from file name
-    file_name = Path(file_path).stem
-    v_v = re.findall("ER[0-9]+ v[0-9]+", file_name)[0].replace("ER", "")
-    df["V&V Test Report"] = v_v
-
     # Output as either pandas dataframe or dict, depending on return_df setting.
     if return_df:
         return df
@@ -244,6 +237,9 @@ def _read_group_by_method_txt(file_path, return_df=True):
 
     data = []
     for line in lines:
+        if len(line) < 2:
+            continue # skip any lines that are too short; likely empty
+        
         # Remove the "com.philips.sapphire.systemintegrationtests." part
         line = line.replace("com.philips.sapphire.systemintegrationtests.", "")
         
@@ -258,10 +254,16 @@ def _read_group_by_method_txt(file_path, return_df=True):
         # Get relevant data for other columns
         base_folder_idx = [i for i, s in enumerate(file_path.parts) if "RestApiTests" in str(s)][0]
         
+        # Also add the V&V Test Report info by extracting it from file name
+        er_folder_name = file_path.parts[base_folder_idx - 2]
+        v_v = re.findall("ER[0-9]+ v[0-9]+", er_folder_name)[0].replace("ER", "")
+        
         # Store data in list
         data.append({
             'test_name':line_data[0],
             'status':line_data[1],
+            'version_num': file_path.parts[base_folder_idx - 1],
+            'v_v': v_v,
             'rc': file_path.parts[base_folder_idx + 1],
             'name': file_path.parts[base_folder_idx + 2],
             'file_name': str(file_path)
@@ -288,3 +290,96 @@ def read_rally_output(file_path, return_df=True):
         return df
     else:
         return df.to_dict('records')
+    
+
+def read_rest_api_tests(folder_path, return_df=True):
+    """Reads in all the Rx automatic test .txt files.
+    
+    Will recursively go through the folders and read in .txt files.
+    Make sure everything is unzipped first; in future can add functionality to
+    unzip automatically if needed.
+
+    Args:
+        folder_path (String or pathlib.Path): path to the main Rx folder.
+        return_df (bool, optional): If true, returns pandas dataframe. Else dict. Defaults to True.
+
+    Returns:
+        pd.DataFrame or dict: Test names and corresponding statuses
+    """
+    print(f"Loading Rx test files from {folder_path}")
+    if isinstance(folder_path, str):
+        folder_path = Path(folder_path)
+
+    # Read all .txt files recursively in the folders
+    file_list = [file_name for file_name in folder_path.rglob("*.txt") if "__MACOSX" not in str(file_name)]
+
+    # Load in the data from each file, add to a single list
+    data = []
+    for file_name in file_list:
+        data.extend(_read_rx_txt(file_name, return_df=False))
+    
+    # make a dataframe for outputting
+    df = pd.DataFrame(data)
+
+    # Output as either pandas dataframe or dict, depending on return_df setting.
+    if return_df:
+        return df
+    else:
+        return df.to_dict('records')
+    
+def _read_rx_txt(file_path, return_df=True):
+    """Reads in a single Rx automatic test .txt file.
+
+    Mostly just for the `read_rx_tests()` method. Usually won't need to call yourself
+
+    Args:
+        file_path (String): path to the .txt file
+        return_df (bool, optional): If true, returns pandas dataframe. Else dict. Defaults to True.
+
+    Returns:
+        pd.DataFrame or dict: Test names and corresponding statuses
+    """
+    # If receive str, convert to pathlib object
+    if isinstance(file_path, str):
+        file_path = Path(file_path)
+
+    # Read in file using pathlib method, split on new line symbols
+    lines = file_path.read_text().split("\n")
+
+    # Remove blank lines
+    lines = [line for line in lines if len(line) > 0]
+
+    data = []
+    for line in lines:
+        if len(line) < 2:
+            continue 
+        # split on the | char; should only be one of them
+        line_data = line.split("|")
+
+        # For some reason if theres multiple of that char, only consider the last one
+        if len(line_data) > 2:
+            print(f"found line with multiple '|' chars: {line}")
+            line_data = "".join(line_data[:-1]) + [line_data[-1]]
+        
+        # Get relevant data for other columns
+        base_folder_idx = [i for i, s in enumerate(file_path.parts) if "Rx" in str(s)][0]
+        
+        # Also add the V&V Test Report info by extracting it from file name
+        er_folder_name = file_path.parts[base_folder_idx - 2]
+        v_v = re.findall("ER[0-9]+ v[0-9]+", er_folder_name)[0].replace("ER", "")
+        
+        # Store data in list
+        data.append({
+            'test_name':line_data[0],
+            'status':line_data[1],
+            'version_num': file_path.parts[base_folder_idx - 1],
+            'v_v': v_v,
+            'rc': file_path.parts[base_folder_idx + 1],
+            'name': file_path.parts[base_folder_idx + 2],
+            'file_name': str(file_path)
+        })
+
+    if return_df:
+        return pd.DataFrame(data)
+    else:
+        return data
