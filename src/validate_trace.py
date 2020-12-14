@@ -32,9 +32,20 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     
     # Get df of rows where PRD exists but SRS does not
     invalid = num_unique.loc[num_unique["SRS ID"] == 0]
+    invalid = pd.DataFrame(invalid, columns=['PRD', 'SRS ID'])
+    invalid_df = pd.DataFrame()
+    for val in invalid['PRD']:
+        invalid_df = invalid_df.append(trace[trace['PRD'] == val])
+    invalid_df = invalid_df.sort_index()
+        
     valid = num_unique.loc[num_unique["SRS ID"] != 0]
+    valid = pd.DataFrame(valid, columns=['PRD', 'SRS ID'])
+    valid_df = pd.DataFrame()
+    for val in valid['PRD']:
+        valid_df = valid_df.append(trace[trace['PRD'] == val])
+    valid_df = valid_df.sort_index()
     
-    return valid, invalid
+    return valid_df, invalid_df
     
     
 def check_srs_has_test(trace, prd_prefix, srs_prefix):
@@ -62,7 +73,7 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     group = trace.groupby('SRS ID')['Test Name'].nunique()
     num_unique = pd.DataFrame({'SRS ID':group.index, 'Test Name':group.values})
     
-    # Get df of rows where SRS exists but test doe not
+    # Get df of rows where SRS exists but test does not
     invalid = num_unique.loc[num_unique["Test Name"] == 0]
     valid = num_unique.loc[num_unique["Test Name"] != 0]
 
