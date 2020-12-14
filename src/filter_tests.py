@@ -26,7 +26,7 @@ def filter_manual_tests(file_path):
     return valid_manual_tests, invalid_manual_tests
 
 
-def filter_automatic_tests(folder_path):
+def filter_automated_tests(folder_path):
     """filter the valid and invalid automated tests
     
     Args:

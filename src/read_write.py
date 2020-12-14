@@ -229,6 +229,9 @@ def _read_group_by_method_txt(file_path, return_df=True):
 
     data = []
     for line in lines:
+        # Remove the "com.philips.sapphire.systemintegrationtests." part
+        line = line.replace("com.philips.sapphire.systemintegrationtests.", "")
+        
         # split on the | char; should only be one of them
         line_data = line.split("|")
 

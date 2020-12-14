@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="chrome 85.0.4183.121" timestamp="2020-09-29T18:48:01" id="0" hostname="jamess-mbp.lan" tests="54" failures="0">
+    <testcase name="The PS console login page is loaded successfully" time="0" classname="Given we wish to test PSConsole Login"/>
+    <testcase name="The customers tab is loaded successfully" time="0" classname="Given we wish to test PSConsole Login When I login the PS console with valid username and password Then"/>
+    <testcase name="The settings tab is loaded successfully" time="0" classname="Given we wish to test PSConsole Login When I login the PS console with valid username and password Then"/>
+    <testcase name="The equipment tab is loaded successfully" time="0" classname="Given we wish to test PSConsole Login When I login the PS console with valid username and password Then"/>
+    <testcase name="The users tab is loaded successfully" time="0" classname="Given we wish to test PSConsole Login When I login the PS console with valid username and password Then"/>
+    <testcase name="The customers page is loaded successfully" time="0" classname="Given we wish to test PSConsole Login When I login the PS console with valid username and password Then"/>
+    <testcase name="The Login Page is loaded" time="0" classname="Given we wish to test PSConsole Login When I logout of PSConsole Then"/>
+    <testcase name="The PS console login page is loaded successfully" time="0" classname="Given we wish to test the PSConsole External Services Page"/>
+    <testcase name="I am logged in with a valid account" time="0" classname="Given we wish to test the PSConsole External Services Page When I login the PS console with valid username and password"/>
+    <testcase name="And I load the external services page" time="0" classname="Given we wish to test the PSConsole External Services Page When I login the PS console with valid username and password"/>
+    <testcase name="Then the External Service Type dropdown should have the correct values" time="0" classname="Given we wish to test the PSConsole External Services Page When I login the PS console with valid username and password"/>
+    <testcase name="The external service &quot;medadept&quot; is the only one showing in the list" time="0" classname="Given we wish to test the PSConsole External Services Page TC9779 Then When I search for the external service with id XRAY-ID:CARE-30499&quot;medadept&quot;"/>
+    <testcase name="The external services of type &quot;Benefits Managers&quot; are the only ones in the list" time="0" classname="Given we wish to test the PSConsole External Services Page  TC9779 Then When I filter for the external service type XRAY-ID:CARE-30499&quot;Benefits Managers&quot;"/>
+    <testcase name="The external services add modal open" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I click the add external services button"/>
+    <testcase name="The Save Button will be disabled" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I click the add external services button"/>
+    <testcase name="And When I click cancel the modal will go away" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I click the add external services button"/>
+    <testcase name="The external services add modal will open" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The Name field can be populated" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The Save Button will be disabled" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The Type field can be set" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The Save Button will be disabled" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The group permission set field can be set" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The Save Button will be disabled" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The customer permission set field can be set" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The Save Button will be disabled" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The integrator customer search field can be searched and a value applied" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="TC11169 The Save Button will not be disabled XRAY-ID:CARE-30500" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="TC11169 The Include in Patient Wizard Checkbox can not be unchecked if Allow Patient Opt-In is checked XRAY-ID:CARE-30500" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="TC11170 The Include in Patient Wizard can be checked or unchecked if the Allow Patient Opt-in is unchecked XRAY-ID:CARE-30501" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="All Checkboxes can be toggled off" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="TC11395 And an external service subscriptions is selected XRAY-ID:CARE-14464" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="TC11167 Save and create the external Service XRAY-ID:CARE-30498" time="0" classname="Given we wish to test the PSConsole External Services Page When I attempt to add an external service"/>
+    <testcase name="The newly created external service is returned" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I search for the newly created external service"/>
+    <testcase name="The external service can be toggled off and on and back off" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I search for the newly created external service"/>
+    <testcase name="TC11394 The external service can be updated XRAY-ID:CARE-14466" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I search for the newly created external service"/>
+    <testcase name="TC11392 And the old subscription is there by default and is removed XRAY-ID:CARE-30503" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I search for the newly created external service"/>
+    <testcase name="And a new external service subscriptions is selected" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I search for the newly created external service"/>
+    <testcase name="TC11172 Save and edit the external Service XRAY-ID:CARE-30502" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I search for the newly created external service"/>
+    <testcase name="The updated external service fields stayed updated" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I search for the newly created external service"/>
+    <testcase name="And When I click cancel the modal will go away" time="0" classname="Given we wish to test the PSConsole External Services Page Then when I search for the newly created external service"/>
+    <testcase name="The Login Page is loaded" time="0" classname="Given we wish to test the PSConsole External Services Page When I logout of PSConsole Then"/>
+    <testcase name="The PS console login page is loaded successfully" time="0" classname="Given we wish to test the PSConsole External Services Page"/>
+    <testcase name="I am logged in with a valid account" time="0" classname="Given we wish to test the PSConsole External Services Page When I login the PS console with valid username and password"/>
+    <testcase name="And I load the subscriptions page" time="0" classname="Given we wish to test the PSConsole External Services Page When I login the PS console with valid username and password"/>
+    <testcase name="The subscriptions are on the page XRAY-ID:CARE-14467" time="0" classname="Given we wish to test the PSConsole External Services Page When I login the PS console with valid username and password"/>
+    <testcase name="The subscription can be toggled" time="0" classname="Given we wish to test the PSConsole External Services Page When I login the PS console with valid username and password"/>
+  </testsuite>
+</testsuites>

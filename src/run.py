@@ -15,9 +15,6 @@ if __name__ == "__main__":
     active_prd_path = ""
 
     
-    # Load in rally export
-    
-    
     # Load previous traces (for backfilling if needed)
     trace_path = "../data/ER 2228015 v43 ATT1 Sapphire 1.33 Trace Matrix.xlsx"
     prev_trace_path = "../data/ER 2228015 v42 ATT1 Sapphire 1.32 Trace Matrix.xlsx"
