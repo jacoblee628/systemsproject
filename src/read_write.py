@@ -261,7 +261,7 @@ def _read_group_by_method_txt(file_path, return_df=True):
         # Store data in list
         data.append({
             'test_name':line_data[0],
-            'status':line_data[1],
+            'status':line_data[1].lower().capitalize(),
             'version_num': file_path.parts[base_folder_idx - 1],
             'v_v': v_v,
             'rc': file_path.parts[base_folder_idx + 1],
@@ -292,7 +292,7 @@ def read_rally_output(file_path, return_df=True):
         return df.to_dict('records')
     
 
-def read_rest_api_tests(folder_path, return_df=True):
+def read_rx_tests(folder_path, return_df=True):
     """Reads in all the Rx automatic test .txt files.
     
     Will recursively go through the folders and read in .txt files.
@@ -371,7 +371,7 @@ def _read_rx_txt(file_path, return_df=True):
         # Store data in list
         data.append({
             'test_name':line_data[0],
-            'status':line_data[1],
+            'status':line_data[1].lower().capitalize(),
             'version_num': file_path.parts[base_folder_idx - 1],
             'v_v': v_v,
             'rc': file_path.parts[base_folder_idx + 1],

@@ -3,24 +3,20 @@ import pandas as pd
 import read_write as rw
 
 
-def filter_manual_tests(file_path):
+def filter_manual_tests(tests):
     """filter the valid and invalid manual tests
     
     Args:
-        file_path (String): path to the manual file
+        tests (pandas.DataFrame): the manual test data
 
     Returns:
         two list or pd.DataFrame: the valid and invalid manual tests
     """
-    
-    # Load dataframe from the function read_manual tests
-    manual_tests = rw.read_manual_tests(file_path, return_df=True)
-    
     # Check test status and write results in valid_manual_tests
-    valid_manual_tests = manual_tests[(manual_tests['status']=='Passed') | (manual_tests['status']=='Failed')]
+    valid_manual_tests = tests[(tests['status']=='Passed') | (tests['status']=='Failed')]
     
     # Check test status and write results in invalid_manual_tests
-    invalid_manual_tests = manual_tests[(manual_tests['status']!='Passed') & (manual_tests['status']!='Failed')]
+    invalid_manual_tests = tests[(tests['status']!='Passed') & (tests['status']!='Failed')]
     
     # Return dataframe of valid and invalid tests
     return valid_manual_tests, invalid_manual_tests
@@ -39,10 +35,10 @@ def filter_automated_tests(folder_path):
     rest_api_tests = rw.read_rest_api_tests(folder_path, return_df=True)
     
     # Check test status and write results in valid_rest_api_tests
-    valid_rest_api_tests = rest_api_tests[(rest_api_tests['status']=='passed') | (rest_api_tests['status']=='failed')]
+    valid_rest_api_tests = rest_api_tests[(rest_api_tests['status']=='Passed') | (rest_api_tests['status']=='Failed')]
     
     # Check test status and write results in invalid_rest_api_tests
-    invalid_rest_api_tests = rest_api_tests[(rest_api_tests['status']!='passed') & (rest_api_tests['status']!='failed')]
+    invalid_rest_api_tests = rest_api_tests[(rest_api_tests['status']!='Passed') & (rest_api_tests['status']!='Failed')]
         
     # Return dataframe of valid and invalid tests
     return valid_rest_api_tests, invalid_rest_api_tests
