@@ -6,6 +6,19 @@ import numpy as np
 import read_write as rw
 
 def create_trace(vv_folder_path, as_run_path, version_num, srs_prefix="TC"):
+    """ Function for processing manual and automatic tests
+    
+    Args:
+        vv_folder_path (String): folder path of root folder
+        as_run_path (String): file path of as_runs
+        version_num (String): version number
+        srs_prefix (String): string that SRS starts with
+        
+    Returns:
+        pd.DataFrame(dfs) (List): list of valid data frames
+        invalid_dfs (List): list of invalid data frames
+    """
+    
     # ----------------
     # 1. Preprocessing
     # ----------------
@@ -55,6 +68,17 @@ def _filter_status(tests_df):
 
 
 def _process_as_run_tests(as_run_path, srs_prefix="TC"):
+    """ Function for processing as runs
+    
+    Args:
+        as_run_path (String): file path of as_runs
+        srs_prefix (String): string that SRS starts with
+        
+    Returns:
+        pd.DataFrame(new_trace) (DataFrame): new trace matrix with valid tests
+        invalid_dfs (List): list of invalid data frames
+    """
+    
     # Load in dataset (mostly unprocessed)
     as_run_df = rw.read_as_run_tests(as_run_path)
     
@@ -112,6 +136,17 @@ def _process_as_run_tests(as_run_path, srs_prefix="TC"):
     
     
 def _process_automatic_tests(version_path, srs_prefix="TC"):
+    """ Function for processing automatic tests
+    
+    Args:
+        version_path (String): file path
+        srs_prefix (String): string that SRS starts with
+        
+    Returns:
+        pd.DataFrame(new_trace) (DataFrame): new trace matrix with valid tests
+        invalid_dfs (List): list of invalid data frames
+    """
+    
     # Load in dataset (mostly unprocessed)
     api_df = rw.read_rest_api_tests(version_path / "RestApiTests") # Note: "/" on a pathlib.Path allows navigating into child folders
     rx_df = rw.read_rx_tests(version_path / "Rx")
