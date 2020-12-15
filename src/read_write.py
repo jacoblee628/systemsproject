@@ -1,14 +1,12 @@
+import csv
 import pathlib
+import re
 from pathlib import Path
 
-import docx
 import openpyxl as pyxl
 import pandas as pd
 from docx import Document
 from openpyxl import Workbook
-import csv
-
-import re
 
 
 def read_trace(file_path, matrix_type, return_df=True):
@@ -429,14 +427,18 @@ def write_error_log(output_path, invalid_dfs):
     Output:
         Outputs error_df to a csv file
     """
-    with open(output_path, 'w', newline='') as output_file:
+    with open(output_path, 'w', newline='') as f:
+        writer = csv.writer(f)
         for df in invalid_dfs:
-            df = df.to_dict('records')
+            for entry in df.to_dict('records'):
+                row = str(entry).replace("{", "").replace("}", "")
+                writer.writerow(row.split(","))
+                
             
-            keys = df[0].keys()
-            dict_writer = csv.DictWriter(output_file, keys)
-            dict_writer.writeheader()
-            dict_writer.writerows(df) 
+            # keys = df[0].keys()
+            # dict_writer = csv.DictWriter(output_file, keys)
+            # dict_writer.writeheader()
+            # dict_writer.writerows(df) 
     
     
     

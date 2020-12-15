@@ -1,9 +1,11 @@
-import pandas as pd
+import re
 from pathlib import Path
 
-import re
 import numpy as np
+import pandas as pd
+
 import read_write as rw
+
 
 def create_trace(vv_folder_path, as_run_path, version_num, srs_prefix="TC"):
     """ Function for processing manual and automatic tests
@@ -31,7 +33,9 @@ def create_trace(vv_folder_path, as_run_path, version_num, srs_prefix="TC"):
     
     # Get the correct folder for the provided version number.
     version_path = [x for x in vv_folder_path.iterdir() if x.is_dir() and x.name == version_num][0]
-        
+    
+    # TODO: Load previous traces (for backfilling if needed)
+    
     # ----------------------------------------------------
     # 2. Parsing and processing manual and automatic tests
     # ----------------------------------------------------
@@ -88,7 +92,7 @@ def _process_as_run_tests(as_run_path, srs_prefix="TC"):
     invalid_dfs = []
 
     # Filter out if Test Status != "Passed" or "Failed"
-    as_run_df, invalid_df = filter_status(as_run_df)
+    as_run_df, invalid_df = _filter_status(as_run_df)
     if len(invalid_df) > 0:
         invalid_df.insert(0, "Error:", f"Manual as-run entry invalid status for trace")
         invalid_dfs.append(invalid_df)
@@ -160,7 +164,7 @@ def _process_automatic_tests(version_path, srs_prefix="TC"):
     invalid_dfs = []
 
     # Filter out if Test Status != "Passed" or "Failed"
-    df, invalid_df = filter_status(df)
+    df, invalid_df = _filter_status(df)
     if len(invalid_df) > 0:
         invalid_df.insert(0, "Error:", f"Automatic test entry invalid status for trace")
         invalid_dfs.append(invalid_df)

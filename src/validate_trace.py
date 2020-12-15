@@ -1,10 +1,43 @@
 import re
+
 import numpy as np
 import pandas as pd
+
 import read_write as rw
 
 
-def check_prd_has_srs(trace, prd_prefix, srs_prefix):
+def validate_trace(trace, obs_srs_file_path, active_prd_path, prd_prefix="US", srs_prefix="TC"):
+    # Load lists of obsolete srs and active prd  
+    obs_srs = pd.read_csv(obs_srs_file_path)
+    obs_srs_list = obs_srs["Formatted ID"].unique()
+    active_prd = pd.read_csv(active_prd_path)
+    active_prd_list = active_prd["ID"].unique()
+    
+    # Gather all the errors
+    invalid_dfs = []
+    
+    # Run the tests
+    trace, invalid = _check_prd_has_srs(trace, prd_prefix, srs_prefix)
+    invalid_dfs.extend(invalid)
+    
+    trace, invalid = _check_srs_has_test(trace, prd_prefix, srs_prefix)
+    invalid_dfs.extend(invalid)
+    
+    trace, invalid = _check_srs_has_prd(trace, prd_prefix, srs_prefix)
+    invalid_dfs.extend(invalid)
+    
+    trace, invalid = _check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix)
+    invalid_dfs.extend(invalid)
+    
+    trace, invalid = _check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix)
+    invalid_dfs.extend(invalid)
+    
+    trace, invalid = _check_prd_exists(trace, active_prd_list, prd_prefix, srs_prefix)
+    invalid_dfs.extend(invalid)
+    
+    return trace, invalid_dfs
+    
+def _check_prd_has_srs(trace, prd_prefix, srs_prefix):
     """check whether each PRD has SRS
        invalid data frame will contain rows where PRDs do not have SRS
     
@@ -50,7 +83,7 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     return valid_df, invalid_df
     
     
-def check_srs_has_test(trace, prd_prefix, srs_prefix):
+def _check_srs_has_test(trace, prd_prefix, srs_prefix):
     """check whether each SRS has a test
        invalid data frame will contain rows where SRSs do not have a test
     
@@ -97,7 +130,7 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     return valid_df, invalid_df
     
     
-def check_srs_has_prd(trace, prd_prefix, srs_prefix):
+def _check_srs_has_prd(trace, prd_prefix, srs_prefix):
     """check whether each SRS has PRD
        invalid rows will contain rows where SRSs do not have a PRD
         
@@ -144,7 +177,7 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     return valid_df, invalid_df
     
 
-def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
+def _check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     """check whether all PRD referenced by SRS exist
        invalid rows will contain rows where PRDs referenced by SRSs do not exist
         
@@ -162,7 +195,7 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     trace["PRD_clean"] = trace["PRD"]
     
     # function to clean PRD column
-    def get_req_list(string, prefix):
+    def _get_req_list(string, prefix):
         string = string.replace(",", " ")
         test_list = string.split()
         req_list = []
@@ -197,7 +230,7 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     return valid_df, invalid_df
     
     
-def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
+def _check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     """check whether all SRSs referenced by tests exist
        invalid rows will contain rows where SRSs referenced by tests do not exist
         
@@ -215,7 +248,7 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     trace["srs_list"] = trace["Test Name"]
     
     # function to clean column and put into list
-    def get_req_list(string, prefix):
+    def _get_req_list(string, prefix):
         test_list = string.split()
         req_list = []
 
@@ -241,7 +274,7 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     return valid_df, invalid_df
    
     
-def check_prd_exists(trace, active_prd_list, prd_prefix, srs_prefix):
+def _check_prd_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     """check whether all PRD referenced by tests exist
        invalid rows will contain rows where PRDs referenced by tests are not active
         
@@ -259,7 +292,7 @@ def check_prd_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     trace["prd_list"] = trace["Test Name"]
     
     # function to clean column and put into list
-    def get_req_list(string, prefix):
+    def _get_req_list(string, prefix):
         test_list = string.split()
         req_list = []
 
