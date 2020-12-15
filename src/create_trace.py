@@ -25,7 +25,7 @@ def create_trace(folder_path, as_run_path, version_num):
     rx_df = rw.read_rx_tests(version_path / "Rx")
     
     # Manual tests
-    as_run_df = rw.read_as_run_tests(as_run_path)
+    
     
     # ------------
     # 3. Filtering 
@@ -51,15 +51,38 @@ def filter_status(tests_df):
     invalid = tests_df[(tests_df['Test Status']!='Passed') & (tests_df['Test Status']!='Failed')]
     return valid, invalid
 
+
 def process_as_run_tests(as_run_path):
-    manual.loc[manual["Test Name"].isin([""])]
+    # Load in dataset (mostly unprocessed)
+    as_run_df = rw.read_as_run_tests(as_run_path)
     
-    # Also add the V&V Test Report info by extracting it from file name
-    file_name = Path(as_run_path).stem
-    v_v = re.findall("ER([0-9]+ v[0-9]+|[0-9]+v[0-9]+)", file_name)[0].replace("ER", "")
+    # ----------
+    # Filtering
+    # ----------
+    invalid_dfs = []
+
+    # Filter out if Test Status != "Passed" or "Failed"
+    as_run_df, invalid_df = filter_status(as_run_df)
+    if len(invalid_df) > 0:
+        invalid_dfs.append(invalid_df)
+
+    # Filter out tests with blank names (name wasnt in original document; just the run id)
+    invalid_df = as_run_df.loc[as_run_df["Test Name"].isin([""])]
+    invalid_df.insert(0, "Error:", f"Name not found in {file_name}")
+    invalid_dfs.append(invalid_df)
+    as_run_df = as_run_df.loc[~as_run_df["Test Name"].isin([""])]
+    
+    # Filter out entries that won't go in the trace
+    invalid_df = as_run_df.loc[~as_run_df["Test Name"].str[0:3].isin(["PRD", "SRS"])]
+    invalid_df.insert(0, "Error:", "Manual test not part of trace")
+    invalid_dfs.append(invalid_df)
+    as_run_df = as_run_df.loc[as_run_df["Test Name"].str[0:3].isin(["PRD", "SRS"])]
+
+    # 
     
 def process_rest_api_tests(folder_path, version_num):
     # Read in the tests (naive; no )
     rest_api_df = rw.read_rest_api_tests(version_path / "RestApiTests") # Note: "/" on a pathlib.Path allows navigating into child folders
     
     # 
+    valid 

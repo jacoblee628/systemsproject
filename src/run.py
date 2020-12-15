@@ -23,5 +23,6 @@ def run(params):
     print("Script finished")
 
 if __name__ == "__main__":
+    # TODO: Implement argparser and pass args in a dict here (for running via console)
     params = {}
     run(params)
