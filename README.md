@@ -38,15 +38,15 @@ After the validation step, the utility will output an **error log** in a csv fil
 
 # How To Use
 * **for Windows systems:**
-  * double click the start.ext in dist folder
-  * click select buttons to select corresponding files/folders
-  * input the version number in the pattern of #.#.#
-  * select srs prefix from the dropdown list
-  * click start button to start processing
+  1. double click the start.ext in dist folder
+  2. click select buttons to select corresponding files/folders
+  3. input the version number in the pattern of #.#.#
+  4. select srs prefix from the dropdown list
+  5. click start button to start processing
 
-  * **for Linux and macOS systems:**
-  * open terminal and run the select_file.py
-  * click select buttons to select corresponding files/folders
-  * input the version number in the pattern of #.#.#
-  * select srs prefix from the dropdown list
-  * click start button to start processing
+* **for Linux and macOS systems:**
+  1. open terminal and run the select_file.py
+  2. click select buttons to select corresponding files/folders
+  3. input the version number in the pattern of #.#.#
+  4. select srs prefix from the dropdown list
+  5. click start button to start processing
