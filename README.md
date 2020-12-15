@@ -22,7 +22,7 @@ The utililty will then **process these files and output a new trace matrix** bas
 * All SRS referenced by tests must exist (not obsolete)
 * All PRD referenced by tests must exist (not obsolete)
 
-After the validation step, the utility will output a error log in a csv file with the rows that have been invalidated by the checks.
+After the validation step, the utility will output an **error log** in a csv file with the rows that have been invalidated by the checks.
 
 
 # Files Included
