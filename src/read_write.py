@@ -6,6 +6,7 @@ import openpyxl as pyxl
 import pandas as pd
 from docx import Document
 from openpyxl import Workbook
+import csv
 
 import re
 
@@ -427,12 +428,14 @@ def write_error_log(output_path, invalid_dfs):
     Output:
         Outputs error_df to a csv file
     """
-    error_df = pd.DataFrame()
-    
-    for df in invalid_dfs:
-        error_df = error_df.append(df)
-    
-    error_df.to_csv(output_path, index=False)   
+    with open(output_path, 'w', newline='') as output_file:
+        for df in invalid_dfs:
+            df = df.to_dict('records')
+            
+            keys = df[0].keys()
+            dict_writer = csv.DictWriter(output_file, keys)
+            dict_writer.writeheader()
+            dict_writer.writerows(df) 
     
     
     
