@@ -210,21 +210,16 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     
     trace["srs_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, srs_prefix))
     
-    # Check if srs in obsolete list
-    invalid = []
-    valid = []
+    trace["invalid"] = trace["srs_list"].apply(lambda lst: any((True for x in lst if x in obs_srs_list)))
     
-    for lst in trace["srs_list"]:
-        for val in lst:
-            if val in obs_srs_list:
-                invalid.append(val)
-            else:
-                valid.append(val)
+    valid_df = trace[trace['invalid'] == False]
+    valid_df = valid_df.drop(columns=['srs_list', 'invalid'])
     
-    invalid = set(invalid)
-    valid = set(valid)
+    invalid_df = trace[trace['invalid'] == True]
+    invalid_df = invalid_df.insert(0, "Error: Test references obsolete SRS")
+    invalid_df = invalid_df.drop(columns=['srs_list', 'invalid'])
     
-    return valid, invalid
+    return valid_df, invalid_df
    
     
 def check_prd_exists(trace, active_prd_list):
