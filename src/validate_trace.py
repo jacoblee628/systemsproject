@@ -7,15 +7,17 @@ import read_write as rw
 
 
 def check_prd_has_srs(trace, prd_prefix, srs_prefix):
-    """check whether each prd has srs
+    """check whether each PRD has SRS
+       invalid data frame will contain rows where PRDs do not have SRS
     
     Args:
-        file_path (String): path to the trace matrix
-        matrix_type (String): "CO" or "PSC"
+        trace (DataFrame): trace matrix
+        prd_prefix (string): string that PRD starts with
+        srs_prefix (string): string that SRS starts with
         
     Returns:
-        Error message if a prd does not have srs
-        list of prds without srs
+        valid_df (DataFrame): data frame with all valid rows of trace matrix
+        invalid_df (DataFrame): data frame with all invalid rows of trace matrix
     """
     
     # Get rid of n/a values
@@ -51,16 +53,17 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     
     
 def check_srs_has_test(trace, prd_prefix, srs_prefix):
-    """check whether each srs has a test
+    """check whether each SRS has a test
+       invalid data frame will contain rows where SRSs do not have a test
     
     Args:
-        file_path (String): path to the trace matrix
-        matrix_type (String): "CO" or "PSC"
+        trace (DataFrame): trace matrix
+        prd_prefix (string): string that PRD starts with
+        srs_prefix (string): string that SRS starts with
         
     Returns:
-        String "Passed" if all srs has test
-        Error message if a srs does not have a test
-        df of srs without tests
+        valid_df (DataFrame): data frame with all valid rows of trace matrix
+        invalid_df (DataFrame): data frame with all invalid rows of trace matrix
     """
     
     # Get rid of n/a values
@@ -96,16 +99,18 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     
     
 def check_srs_has_prd(trace, prd_prefix, srs_prefix):
-    """check whether each srs has prd
-    
+    """check whether each SRS has PRD
+       invalid rows will contain rows where SRSs do not have a PRD
+        
     Args:
-        file_path (String): path to the trace matrix
-        matrix_type (String): "CO" or "PSC"
+        Args:
+        trace (DataFrame): trace matrix
+        prd_prefix (string): string that PRD starts with
+        srs_prefix (string): string that SRS starts with
         
     Returns:
-        String "Passed" if all srs has prd
-        Error message if a srs does not have a prd
-        list of srs without prd
+        valid_df (DataFrame): data frame with all valid rows of trace matrix
+        invalid_df (DataFrame): data frame with all invalid rows of trace matrix
     """
     
     # Get rid of n/a values
@@ -141,17 +146,18 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     
 
 def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
-    """check whether all prd referenced by srs exist
-    
+    """check whether all PRD referenced by SRS exist
+       invalid rows will contain rows where PRDs referenced by SRSs do not exist
+        
     Args:
-        file_path_trace (String): path to the trace matrix
-        active_prd_list (List): list of active PRD
-        matrix_type (String): "CO" or "PSC"
+        trace (DataFrame): trace matrix
+        active_prd_list (list): list of PRDs that are active
+        prd_prefix (string): string that PRD starts with
+        srs_prefix (string): string that SRS starts with
         
     Returns:
-        String "Passed" if all prd exist
-        String "Failed" if there is an obsolete prd referenced
-        list of obsolete prd
+        valid_df (DataFrame): data frame with all valid rows of trace matrix
+        invalid_df (DataFrame): data frame with all invalid rows of trace matrix
     """
     
     trace["PRD_clean"] = trace["PRD"]
@@ -189,17 +195,18 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     
     
 def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
-    """check whether all srs referenced by tests exist
-    
+    """check whether all SRSs referenced by tests exist
+       invalid rows will contain rows where SRSs referenced by tests do not exist
+        
     Args:
-        file_path_trace (String): path to the trace matrix
-        obs_srs_list (List): list of obsolete SRS
-        matrix_type (String): "CO" or "PSC"
+        trace (DataFrame): trace matrix
+        obs_srs_list (list): list of SRS that are obsolete
+        prd_prefix (string): string that PRD starts with
+        srs_prefix (string): string that SRS starts with
         
     Returns:
-        String "Passed" if all srs exist
-        String "Failed" if there is an obsolete srs referenced
-        list of obsolete srs
+        valid_df (DataFrame): data frame with all valid rows of trace matrix
+        invalid_df (DataFrame): data frame with all invalid rows of trace matrix
     """
     
     trace["srs_list"] = trace["Test Name"]
@@ -228,18 +235,19 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     return valid_df, invalid_df
    
     
-def check_prd_exists(trace, active_prd_list):
-    """check whether all prd referenced by tests exist
-    
+def check_prd_exists(trace, active_prd_list, prd_prefix, srs_prefix):
+    """check whether all PRD referenced by tests exist
+       invalid rows will contain rows where PRDs referenced by tests are not active
+        
     Args:
-        file_path_trace (String): path to the trace matrix
-        active_prd_list (List): list of active prd
-        matrix_type (String): "CO" or "PSC"
+        trace (DataFrame): trace matrix
+        active_prd_list (list): list of PRDs that are active
+        prd_prefix (string): string that PRD starts with
+        srs_prefix (string): string that SRS starts with
         
     Returns:
-        String "Passed" if all prd exist
-        String "Failed" if there is an obsolete prd referenced
-        list of obsolete prd
+        valid_df (DataFrame): data frame with all valid rows of trace matrix
+        invalid_df (DataFrame): data frame with all invalid rows of trace matrix
     """
     
     trace["prd_list"] = trace["Test Name"]
