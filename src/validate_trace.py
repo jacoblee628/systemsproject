@@ -77,7 +77,6 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     # Get df of rows where SRS exists but test does not
     invalid = num_unique.loc[num_unique["Test Name"] == 0]
     invalid = pd.DataFrame(invalid, columns=['SRS ID', 'Test Name'])
-    invalid_df = pd.DataFrame()
     for val in invalid['SRS ID']:
         invalid_df = invalid_df.append(trace[trace['SRS ID'] == val])
     invalid_df = invalid_df.sort_index()
