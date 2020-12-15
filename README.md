@@ -27,14 +27,15 @@ After the validation step, the utility will output an **error log** in a csv fil
 
 ## Files Included
 * `create_trace.py`
-  * contains functions for creating the new trace matrix and validating manual and automatic tests
+  * contains functions for processing test documents in order to create the new trace
 * `read_write.py`
   * contains functions for reading in input files
 * `run.py`
+  * Contains main pipeline code and also parsing command line inputs.
 * `select_file.py`
-  * contains functions for creating a user interface
+  * User interface
 * `validate_trace.py`
-  * contains functions for validating the new trace matrix
+  * Validating the new trace matrix
 
 ## Pipeline Description
 `run.py/run()` is the main pipeline method.
@@ -91,12 +92,18 @@ python src/run.py -o "desired_trace_name.csv" -m "path/to/ER2228014 v51 ATT1 Man
 ```
 
 ## Remaining/Incomplete Tasks
-* Filling in these missing columns. 
+
+* Writing logic for these missing columns. 
 
 ![Sample Trace Matrix](sample_preview.png)
 
-We commented out validation for now; should reenable once these have been added back.
+We commented out validation for now, otherwise it'd always fail. Should reenable validation once columns are all complete and logic is verified.
 
+* Ensure all relevant documents are included in the pipeline
+    * Currently, only manual as-run and automatic tests are fully integrated.
+    * We've written code in `read_write.py` to read in most other documents provided, however. But they still would need to be parsed in `create_trace.py`.
+* Adding in backfilling of entries
 * Verifying that current logic and process is correct
     * Particularly while formatting data in `create_trace.py`. 
-* Writing more validation tests
+* Writing more validation tests in `validate_trace.py`.
+* Improving UI/integration with Rally/Sapphire.
