@@ -88,7 +88,7 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
         valid_df = valid_df.append(trace[trace['SRS ID'] == val])
     valid_df = valid_df.sort_index()
 
-    return valid, invalid
+    return valid_df, invalid_df
     
     
 def check_srs_has_prd(trace, prd_prefix, srs_prefix):
@@ -105,6 +105,7 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     """
     
     # Get rid of n/a values
+    invalid_df = trace.loc[-trace['SRS ID'].str.startswith(prd_prefix)]
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
     
     for val in trace['PRD']:
@@ -118,9 +119,20 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     
     # Get df of rows where SRS exists but PRD does not
     invalid = num_unique.loc[num_unique["PRD"] == 0]
+    invalid = pd.DataFrame(invalid, columns=['SRS ID', 'PRD'])
+    invalid_df = pd.DataFrame()
+    for val in invalid['SRS ID']:
+        invalid_df = invalid_df.append(trace[trace['SRS ID'] == val])
+    invalid_df = invalid_df.sort_index()
+        
     valid = num_unique.loc[num_unique["PRD"] != 0]
+    valid = pd.DataFrame(valid, columns=['SRS ID', 'PRD'])
+    valid_df = pd.DataFrame()
+    for val in valid['SRS ID']:
+        valid_df = valid_df.append(trace[trace['SRS ID'] == val])
+    valid_df = valid_df.sort_index()
 
-    return valid, invalid
+    return valid_df, invalid_df
     
 
 def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
