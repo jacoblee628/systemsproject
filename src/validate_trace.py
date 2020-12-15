@@ -19,7 +19,7 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     """
     
     # Get rid of n/a values
-    invalid_df = trace.loc[-trace['PRD'].str.startswith(prd_prefix)]
+    valid_df = trace.loc[-trace['PRD'].str.startswith(prd_prefix)]
     trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]
     
     for val in trace['SRS ID']:
@@ -41,7 +41,6 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
         
     valid = num_unique.loc[num_unique["SRS ID"] != 0]
     valid = pd.DataFrame(valid, columns=['PRD', 'SRS ID'])
-    valid_df = pd.DataFrame()
     for val in valid['PRD']:
         valid_df = valid_df.append(trace[trace['PRD'] == val])
     valid_df = valid_df.sort_index()
@@ -63,6 +62,7 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     """
     
     # Get rid of n/a values
+    valid_df = trace.loc[-trace['SRS ID'].str.startswith(prd_prefix)]
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
     
     for val in trace['Test Name']:
@@ -77,13 +77,13 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     # Get df of rows where SRS exists but test does not
     invalid = num_unique.loc[num_unique["Test Name"] == 0]
     invalid = pd.DataFrame(invalid, columns=['SRS ID', 'Test Name'])
+    invalid_df = pd.DataFrame()
     for val in invalid['SRS ID']:
         invalid_df = invalid_df.append(trace[trace['SRS ID'] == val])
     invalid_df = invalid_df.sort_index()
         
     valid = num_unique.loc[num_unique["Test Name"] != 0]
     valid = pd.DataFrame(valid, columns=['SRS ID', 'Test Name'])
-    valid_df = pd.DataFrame()
     for val in valid['SRS ID']:
         valid_df = valid_df.append(trace[trace['SRS ID'] == val])
     valid_df = valid_df.sort_index()
@@ -105,7 +105,7 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     """
     
     # Get rid of n/a values
-    invalid_df = trace.loc[-trace['SRS ID'].str.startswith(prd_prefix)]
+    valid_df = trace.loc[-trace['SRS ID'].str.startswith(prd_prefix)]
     trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
     
     for val in trace['PRD']:
@@ -127,7 +127,6 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
         
     valid = num_unique.loc[num_unique["PRD"] != 0]
     valid = pd.DataFrame(valid, columns=['SRS ID', 'PRD'])
-    valid_df = pd.DataFrame()
     for val in valid['SRS ID']:
         valid_df = valid_df.append(trace[trace['SRS ID'] == val])
     valid_df = valid_df.sort_index()
