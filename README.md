@@ -25,7 +25,8 @@ The utility will then **process these files and output a new trace matrix** base
 After the validation step, the utility will output an **error log** in a csv file with the rows that have been invalidated by the checks.
 
 
-## Files Included
+## Scripts
+All scripts are in the `src` folder.
 * `create_trace.py`
   * contains functions for processing test documents in order to create the new trace
 * `read_write.py`
@@ -36,6 +37,8 @@ After the validation step, the utility will output an **error log** in a csv fil
   * User interface
 * `validate_trace.py`
   * Validating the new trace matrix
+
+We've also provided examples of outputs from the current version of the script: `sample_output.csv` and `sample_error_log.csv`.
 
 ## Pipeline Description
 `run.py/run()` is the main pipeline method.
@@ -56,10 +59,10 @@ In more detail:
 
 ## Installation
 1. Download this folder using the green button labeled `Code` on the top right of the page. Unzip if needed.
-2. Install [Anaconda](https://www.anaconda.com/products/individual) that has Python version>= 3.7. 
+2. Install [Anaconda](https://www.anaconda.com/products/individual) that has version >= 3.7 of Python . 
 3. Now we need to install two small libraries in order to read Excel and Word files.
 
-In command line, (search `cmd.exe` in Windows, `bash` in Linux, or `terminal` in Mac), `cd` to this folder and run this command:
+In command line, (search `cmd.exe` in Windows, `bash` in Linux, or `terminal` in Mac), `cd` to this folder and run this command to automatically install the libraries:
 
 ```
 pip install -r requirements.txt
@@ -86,7 +89,7 @@ You can run this using either UI or command line.
 
 **Command line (Works on all platforms):**
 1. In your console, `cd` into this folder.
-2. You can either modify the command in `run.sh` then call `./run.sh`, or run the script directly yourself:
+2. You can either modify the command in `run.sh` then simply call `./run.sh` to execute it, or modify and directly run this command yourself in console:
 ```
 python src/run.py -o "desired_trace_name.csv" -m "path/to/ER2228014 v51 ATT1 Manual As-Runs.docx" -s "data/Obsolete SRS_Test Cases_11.16 pull.csv" -p "data/1.33 PRD.xlsx" -a "data/ER2228014 v51 ATT2 Automated as-run" -v "1.33.0"
 ```
