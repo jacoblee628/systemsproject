@@ -220,6 +220,8 @@ def read_rest_api_tests(folder_path, return_df=True):
     # Read all .txt files recursively in the folders
     file_list = [file_name for file_name in folder_path.rglob("*.txt") if "__MACOSX" not in str(file_name)]
     
+    print(f"Total # API .txt files: {len(file_list)}")
+    
     # Load in the data from each file, add to a single list
     data = []
     for file_name in file_list:
@@ -339,6 +341,8 @@ def read_rx_tests(folder_path, return_df=True):
 
     # Read all .txt files recursively in the folders
     file_list = [file_name for file_name in folder_path.rglob("*.txt") if "__MACOSX" not in str(file_name)]
+
+    print(f"Total # Rx .txt files: {len(file_list)}")
 
     # Load in the data from each file, add to a single list
     data = []

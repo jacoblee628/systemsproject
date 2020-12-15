@@ -13,11 +13,11 @@ def validate_trace(trace, obs_srs_file_path, active_prd_path, prd_prefix="US", s
     active_prd = pd.read_excel(active_prd_path)
     active_prd_list = active_prd["ID"].unique()
     
-    # Gather all the errors
+    # Gather all the errors into this list of dfs
     invalid_dfs = []
     
     # Run the tests
-    trace, invalid = _check_prd_has_srs(trace, prd_prefix, srs_prefix)
+    trace, invalid = _check_prd_has_srs(trace, prd_prefix, srs_prefix) 
     invalid_dfs.extend(invalid)
     
     trace, invalid = _check_srs_has_test(trace, prd_prefix, srs_prefix)
@@ -42,15 +42,14 @@ def _check_prd_has_srs(trace, prd_prefix, srs_prefix):
        invalid data frame will contain rows where PRDs do not have SRS
     
     Args:
-        trace (DataFrame): trace matrix
-        prd_prefix (string): string that PRD starts with
-        srs_prefix (string): string that SRS starts with
+        trace (pd.DataFrame): trace matrix
+        prd_prefix (str): string that PRD starts with
+        srs_prefix (str): string that SRS starts with
         
     Returns:
-        valid_df (DataFrame): data frame with all valid rows of trace matrix
-        invalid_df (DataFrame): data frame with all invalid rows of trace matrix
+        valid_df (pd.DataFrame): data frame with all valid rows of trace matrix
+        invalid_df (pd.DataFrame): data frame with all invalid rows of trace matrix
     """
-    
     # Get rid of n/a values
     valid_df = trace.loc[-trace['PRD'].str.startswith(prd_prefix)]
     trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]

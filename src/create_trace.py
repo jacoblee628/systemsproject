@@ -11,14 +11,14 @@ def create_trace(vv_folder_path, as_run_path, version_num, srs_prefix="TC"):
     """ Function for processing manual and automatic tests
     
     Args:
-        vv_folder_path (String): folder path of root folder
-        as_run_path (String): file path of as_runs
-        version_num (String): version number
-        srs_prefix (String): string that SRS starts with
+        vv_folder_path (str): folder path of root folder
+        as_run_path (str): file path of the manual as-runs .docx
+        version_num (str): version number
+        srs_prefix (str): str that SRS starts with
         
     Returns:
-        pd.DataFrame(dfs) (List): list of valid data frames
-        invalid_dfs (List): list of invalid data frames
+        pd.DataFrame: New trace matrix
+        list(pd.DataFrame): list of invalid data frames
     """
     
     # ----------------
@@ -54,7 +54,7 @@ def create_trace(vv_folder_path, as_run_path, version_num, srs_prefix="TC"):
     
     # TODO: Implement input from more test info sources
 
-    return pd.DataFrame(dfs), invalid_dfs
+    return pd.concat(dfs), invalid_dfs
     
 
 def _filter_status(tests_df):
@@ -75,12 +75,12 @@ def _process_as_run_tests(as_run_path, srs_prefix="TC"):
     """ Function for processing as runs
     
     Args:
-        as_run_path (String): file path of as_runs
-        srs_prefix (String): string that SRS starts with
+        as_run_path (str): file path of as_runs
+        srs_prefix (str): string that SRS starts with
         
     Returns:
-        pd.DataFrame(new_trace) (DataFrame): new trace matrix with valid tests
-        invalid_dfs (List): list of invalid data frames
+        pd.DataFrame: new trace matrix with valid tests
+        list(pd.DataFrame): list of invalid data frames
     """
     
     # Load in dataset (mostly unprocessed)
@@ -143,12 +143,12 @@ def _process_automatic_tests(version_path, srs_prefix="TC"):
     """ Function for processing automatic tests
     
     Args:
-        version_path (String): file path
-        srs_prefix (String): string that SRS starts with
+        version_path (str): path to the folder containing RestApiTests and Rx folders
+        srs_prefix (str): string that SRS starts with
         
     Returns:
-        pd.DataFrame(new_trace) (DataFrame): new trace matrix with valid tests
-        invalid_dfs (List): list of invalid data frames
+        pd.DataFrame: new trace matrix with valid automatic tests
+        list(pd.DataFrame): list of invalid data frames
     """
     
     # Load in dataset (mostly unprocessed)

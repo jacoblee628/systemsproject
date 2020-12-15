@@ -1,0 +1,91 @@
+PRD,SRS ID,Method,Test Name,V&V Test Report,TC ID,Test Status,Release,Name,Owner,Application
+,,Manual,PRD US13044 SRS TC12480 TC12574 Verify Subscription Message sent for Patient Equipment,2228014 v51,US13044,Passed,1.33.0.1,,320034800,Sapphire
+,,Manual,PRD US13044 SRS TC12480 TC12575 Verify Subscription Message sent for Patient Accessories,2228014 v51,US13044,Passed,1.33.0.1,,320034800,Sapphire
+,,Manual,PRD US13044 SRS TC12480 TC12576 Verify Subscription Message sent for Patient Task Notes,2228014 v51,US13044,Passed,1.33.0.1,,320034800,Sapphire
+,,Manual,PRD US13044 SRS TC12480 TC12580 Verify Subscription Message sent for Patient Activity Notes,2228014 v51,US13044,Passed,1.33.0.2,,320034800,Sapphire
+,,Manual,PRD US32438 SRS TC12432 TC12433 TC12434 Patient Mask Suggestions,2228014 v51,US32438,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US1554 SRS TC12438 TC12549 TC12324 TC12439 TC12440 TC12570 TC12642 TC12569 Patient Transfer To Search Location,2228014 v51,US1554,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US3019 US3020 SRS TC1699 TC1703 TC1707 TC1710 TC1711 TC1713 TC2372 TC2373 Support delivery and viewing of Performance Check Reports via modem from Dreamstation 2 devices,2228014 v51,US3019,Failed,1.33.0.1,,sahdal,Sapphire
+,,Manual,PRD US3019 US3020 SRS TC1699 TC1703 TC1707 TC1710 TC1711 TC1713 TC2372 TC2373 Support delivery and viewing of Performance Check Reports via modem from Dreamstation 2 devices,2228014 v51,US3020,Failed,1.33.0.1,,sahdal,Sapphire
+,,Manual,PRD US44174 SRS TC12573 Patient Tranfer Should Not Sync Patient To EA By EH at Target Location,2228014 v51,US44174,Passed,1.33.0.1,,mjayaram,Sapphire
+,,Manual,PRD US1554 SRS TC12642 TC12549 Patient Transfer To Search Unauthorized Location,2228014 v51,US1554,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US21415 SRS TC2974 System displaying two new agreements along with details in PSC,2228014 v51,US21415,Passed,1.33.0.5,,sahdal,Sapphire
+,,Manual,"PRD US14059 SRS TC3623 TC3624 TC3626 - Oxygen Detail report renders Hours of Usage, Avg Usage statistic and Device Flow Settings graphs",2228014 v51,US14059,Passed,1.33.0.1,,sahdal,Sapphire
+,,Manual,PRD US1554 SRS TC6489 TC6491 TC6492 TC6493 TC6494 - The following objects shall be available asTrend Graphs within the Oxygen Detail therapy data report template,2228014 v51,US1554,Passed,1.33.0.2,,sahdal,Sapphire
+,,Manual,PRD US14059 SRS TC4194 TC6490 - Oxygen Station 5L system default template,2228014 v51,US14059,Passed,1.33.0.2,,sahdal,Sapphire
+,,Manual,PRD US1554 SRS TC6495 TC6500 - Display trend data for days recorded,2228014 v51,US1554,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1693 SRS TC3774 - Disclaimer on printed report,2228014 v51,US1693,Passed,1.33.0.1,,sahdal,Sapphire
+,,Manual,PRD US1693 SRS TC3774 TC9122 TC9123 TC9126 TC11173 Trilogy Waveform Interactive Functionality,2228014 v51,US1693,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1685 US1693 US1694 SRS TC2616 TC2685 TC2686 TC2719 TC3242 TC3419 Print Trilogy Detail Report,2228014 v51,US1685,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1685 US1693 US1694 SRS TC2616 TC2685 TC2686 TC2719 TC3242 TC3419 Print Trilogy Detail Report,2228014 v51,US1693,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1685 US1693 US1694 SRS TC2616 TC2685 TC2686 TC2719 TC3242 TC3419 Print Trilogy Detail Report,2228014 v51,US1694,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1693 SRS TC2616 TC2685 TC2686 TC2719 TC2862 Print and Save Trilogy Detail Report,2228014 v51,US1693,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1693 SRS TC4376 Trilogy Detailed Report Patient header,2228014 v51,US1693,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1693 SRS TC600 Reports shall be legible when printed,2228014 v51,US1693,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1693 SRS TC600 Reports shall be legible when viewed via the GUI,2228014 v51,US1693,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1554 SRS TC6439 TC6444 NHS Number is displayed instead of Patient Reference number when NHS setting is on,2228014 v51,US1554,Passed,1.33.0.3,,vnavanee,Sapphire
+,,Manual,PRD US1691 TC1051 TC12442 TC1253 TC1254 TC1255 Patient Report Components (Vent Device),2228014 v51,US1691,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1693 SRS TC3556 TC3872 Translated Trilogy and POU Reports,2228014 v51,US1693,Passed,1.33.0.1,,vnavanee,Sapphire
+,,Manual,PRD US1694 SRS TC3413 TC3414 TC3415 TC3416 TC3417 Trilogy Detail Device Filtering,2228014 v51,US1694,Passed,1.33.0.2,,vnavanee,Sapphire
+,,Manual,PRD US1693 SRS TC2654 TC2672 TC2673 TC2674 Pan and Zoom,2228014 v51,US1693,Passed,1.33.0.1,,320023172,Sapphire
+,,Manual,PRD US2964 SRS TC3290 High Level Browser Regression Test - Chrome,2228014 v51,US2964,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US2964 SRS TC3290 High Level Browser Regression Test - Safari on Mac,2228014 v51,US2964,Passed,1.33.0.2,,320020080,Sapphire
+,,Manual,PRD US2964 SRS TC3290 High Level Browser Regression Test - Firefox,2228014 v51,US2964,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US2964 SRS TC3290 High Level Browser Regression Test - Edge,2228014 v51,US2964,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US2964 SRS TC3290 High Level Browser Regression Test - IE Windows 8.1,2228014 v51,US2964,Passed,1.33.0.1,,320020080,Sapphire
+,,Manual,PRD US2964 SRS TC3290 High Level Browser Regression Test - IE Windows 10,2228014 v51,US2964,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US6138 SRS TC4226 Labeling - About page,2228014 v51,US6138,Passed,1.33.0.1,,sahdal,Sapphire
+,,Manual,PRD US1693 SRS TC8056 Trilogy Bluetooth,2228014 v51,US1693,Passed,1.33.0.1,,310211787,Sapphire
+,,Manual,PRD US2830 SRS TC1268 Auditing - Regression,2228014 v51,US2830,Passed,1.33.0.2,,320020080,Sapphire
+,,Manual,PRD US2964 SRS TC3290 Device Testing - iPhone,2228014 v51,US2964,Passed,1.33.0.1,,320020080,Sapphire
+,,Manual,PRD US2964 SRS TC3290 Device Testing - iPad,2228014 v51,US2964,Passed,1.33.0.1,,320020080,Sapphire
+,,Manual,PRD US2964 SRS TC3290 Device Testing - Android Phone,2228014 v51,US2964,Passed,1.33.0.2,,gkaranov,Sapphire
+,,Manual,PRD US2964 SRS TC3290 Device Testing - Android Tablet,2228014 v51,US2964,Passed,1.33.0.1,,320020080,Sapphire
+,,Manual,PRD US2964 SRS TC3290 Device Testing - Windows Tablet (Surface pro),2228014 v51,US2964,Passed,1.33.0.1,,320020080,Sapphire
+,,Manual,PRD US21681 US7928 SRS TC5395 TC5400 - Hub and device associations and statuses,2228014 v51,US21681,Passed,1.33.0.1,,sahdal,Sapphire
+,,Manual,PRD US21681 US7928 SRS TC5395 TC5400 - Hub and device associations and statuses,2228014 v51,US7928,Passed,1.33.0.1,,sahdal,Sapphire
+,,Manual,PRD US2964 SRS TC3290 High Level Browser Regression Test - Chromium Edge,2228014 v51,US2964,Passed,1.33.0.2,,320020080,Sapphire
+,,Manual,PRD US33279 SRS TC8428 - HIPAA Logs,2228014 v51,US33279,Passed,1.33.0.1,,320020080,Sapphire
+,,Manual,"PRD US14059 SRS TC4198 TC4209 TC8373 TC8374 - Actual Flow Rate, Device Flow Settings, and Respiratory Rate",2228014 v51,US14059,Passed,1.33.0.2,,gkaranov,Sapphire
+,,Manual,PRD US3869 SRS TC2610 Success message for Task Re-assignment,2228014 v51,US3869,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US3869 SRS TC3023 dismiss a task from multiple tasks of a patient from tasks,2228014 v51,US3869,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US3869 SRS TC2995 TC3066 TC3006 Dismiss tasks from the tasks page and help message,2228014 v51,US3869,Passed,1.33.0.1,,320024141,Sapphire
+,,Manual,PRD US44511 SRS TC12573 System shall sync patient to EA when patient transferred from one stage4 Sleep Lab organization to another stage4 organization.,2228014 v51,US44511,Passed,1.33.0.2,,320030270,Sapphire
+,,Manual,PRD US44511 SRS TC12573 System shall not sync patient to EA when patient transferred from one stage4 DME organization to another stage4 DME organization.,2228014 v51,US44511,Passed,1.33.0.2,,320030270,Sapphire
+,,Manual,PRD US33656 SRS TC10745 New patients created post merge within the merged organization in CO shall sync to the corresponding company in EA,2228014 v51,US33656,Passed,1.33.0.2,,320030270,Sapphire
+,,Manual,PRD US33656 SRS TC10746 Existing patients associated with merged organizations updated post merge for demographics in CO shall sync to the corresponding company in EA- Target patient,2228014 v51,US33656,Passed,1.33.0.2,,320030270,Sapphire
+,,Manual,PRD US33656 SRS TC10746 Existing patients associated with merged organizations updated post merge for demographics in CO shall sync to the corresponding company in EA- Target patient_Source user,2228014 v51,US33656,Passed,1.33.0.2,,320030270,Sapphire
+,,Manual,PRD US1560 SRS TC12060 Sync reminders created in CO_USA,2228014 v51,US1560,Failed,1.33.0.1,,320030270,Sapphire
+,,Manual,PRD US1560 SRS TC12058 Sync masks and accessories to EA_USA,2228014 v51,US1560,Passed,1.33.0.1,,320030270,Sapphire
+,,Manual,PRD US2973 US3021 SRS TC12155 TC12156 Location display name - Admin screens,2228014 v51,US2973,Passed,1.33.0.1,,320030270,Sapphire
+,,Manual,PRD US2973 US3021 SRS TC12155 TC12156 Location display name - Admin screens,2228014 v51,US3021,Passed,1.33.0.1,,320030270,Sapphire
+,,Manual,"PRD US1560 SRS TC12058 Sync masks, reminders and accessories to EA_stage4_Finland",2228014 v51,US1560,Passed,1.33.0.1,,320030270,Sapphire
+,,Manual,"PRD US1560 SRS TC12058 Sync masks, reminders and accessories to EA_stage4_Brazil",2228014 v51,US1560,Passed,1.33.0.1,,320030270,Sapphire
+,,Manual,PRD US2979 SRS TC2523 TC2524 Deleting and editing rule sets,2228014 v51,US2979,Passed,1.33.0.3,,320024141,Sapphire
+,,Manual,PRD US1693 SRS TC2654 TC2672 TC2673 TC2674 Pan and Zoom,2228014 v51,US1693,Passed,1.33.0.3,,320023172,Sapphire
+,,Manual,PRD US14059 SRS TC5939 - Pan and Zoom Oxygen average graphs,2228014 v51,US14059,Passed,1.33.0.3,,320023172,Sapphire
+,,Automatic,oxygen.US36044_EmptyUsageDayTest.test_When24HoursOfUseOnDayN_AndNoUsageOnDayNPlusOne_NoUsageDayReturnedForDayNPlusOne,2228014 v51,US36044,Failed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC829 tests.reports.US18529_SummaryTab_DateRanges.summaryTab_sleep_dateRanges,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC829 tests.reports.US18529_SummaryTab_DateRanges.tc829_SummaryTab_data_dateRanges_Trilogy,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC4294 tests.reports.US18529_TherapyDataTabDayRanges.sleepReportDateRange,2228014 v51,US18529,Failed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC9818 TC9843 tests.reports.US31803_Verify_BiLevel_stats_on_Reports.verify_BiLevel_summary_on_sleep_reports,2228014 v51,US31803,Failed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC3872 TC4014 TC4015 TC5621 TC5622 TC5623 TC5624 TC5627 tests.reports.US21007_Report_Translation_Automation.verifyReportTranslation,2228014 v51,US21007,Failed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC4294 tests.reports.US18529_TherapyDataTabDayRanges.trilogyDayRanges,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC3872 TC4014 TC4015 TC5621 TC5622 TC5623 TC5624 TC5627 tests.reports.US21007_Report_Translation_Automation.verifyReportTranslation,2228014 v51,US21007,Passed,1.33.0,,Nihar,Sapphire
+,,Automatic,TC829 tests.reports.US18529_SummaryTab_DateRanges.summaryTab_sleep_dateRanges,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC829 tests.reports.US18529_SummaryTab_DateRanges.tc829_SummaryTab_data_dateRanges_Trilogy,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC9818 TC9843 tests.reports.US31803_Verify_BiLevel_stats_on_Reports.verify_BiLevel_summary_on_sleep_reports,2228014 v51,US31803,Failed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC3872 TC4014 TC4015 TC5621 TC5622 TC5623 TC5624 TC5627 tests.reports.US21007_Report_Translation_Automation.verifyReportTranslation,2228014 v51,US21007,Failed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC829 tests.reports.US18529_SummaryTab_DateRanges.tc829_SummaryTab_data_dateRanges_Trilogy,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC829 tests.reports.US18529_SummaryTab_DateRanges.summaryTab_sleep_dateRanges,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC9818 TC9843 tests.reports.US31803_Verify_BiLevel_stats_on_Reports.verify_BiLevel_summary_on_sleep_reports,2228014 v51,US31803,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC4294 tests.reports.US18529_TherapyDataTabDayRanges.trilogyDayRanges,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC4294 tests.reports.US18529_TherapyDataTabDayRanges.sleepReportDateRange,2228014 v51,US18529,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC3872 TC4014 TC4015 TC5621 TC5622 TC5623 TC5624 TC5627 tests.reports.US21007_Report_Translation_Automation.verifyReportTranslation,2228014 v51,US21007,Failed,1.33.0,,TeamCity,Sapphire
+,,Automatic,oxygen.US36044_EmptyUsageDayTest.test_When24HoursOfUseOnDayN_AndNoUsageOnDayNPlusOne_NoUsageDayReturnedForDayNPlusOne,2228014 v51,US36044,Passed,1.33.0,,TeamCity,Sapphire
+,,Automatic,TC829 tests.reports.US18529_SummaryTab_DateRanges.tc829_SummaryTab_data_dateRanges_Trilogy,2228014 v51,US18529,Passed,1.33.0,,Fischer,Sapphire
+,,Automatic,TC829 tests.reports.US18529_SummaryTab_DateRanges.summaryTab_sleep_dateRanges,2228014 v51,US18529,Passed,1.33.0,,Fischer,Sapphire
+,,Automatic,TC4294 tests.reports.US18529_TherapyDataTabDayRanges.trilogyDayRanges,2228014 v51,US18529,Passed,1.33.0,,Fischer,Sapphire
+,,Automatic,TC4294 tests.reports.US18529_TherapyDataTabDayRanges.sleepReportDateRange,2228014 v51,US18529,Passed,1.33.0,,Fischer,Sapphire
+,,Automatic,TC9818 TC9843 tests.reports.US31803_Verify_BiLevel_stats_on_Reports.verify_BiLevel_summary_on_sleep_reports,2228014 v51,US31803,Passed,1.33.0,,Nihar,Sapphire
+,,Automatic,TC3872 TC4014 TC4015 TC5621 TC5622 TC5623 TC5624 TC5627 tests.reports.US21007_Report_Translation_Automation.verifyReportTranslation,2228014 v51,US21007,Passed,1.33.0,,Nihar,Sapphire
