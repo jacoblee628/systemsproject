@@ -1,8 +1,6 @@
 import re
-
 import numpy as np
 import pandas as pd
-
 import read_write as rw
 
 
@@ -86,7 +84,8 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     for val in invalid['SRS ID']:
         invalid_df = invalid_df.append(trace[trace['SRS ID'] == val])
     invalid_df = invalid_df.sort_index()
-        
+    
+    # create valid df
     valid = num_unique.loc[num_unique["Test Name"] != 0]
     valid = pd.DataFrame(valid, columns=['SRS ID', 'Test Name'])
     for val in valid['SRS ID']:
@@ -103,7 +102,6 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
        invalid rows will contain rows where SRSs do not have a PRD
         
     Args:
-        Args:
         trace (DataFrame): trace matrix
         prd_prefix (string): string that PRD starts with
         srs_prefix (string): string that SRS starts with
@@ -133,7 +131,8 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     for val in invalid['SRS ID']:
         invalid_df = invalid_df.append(trace[trace['SRS ID'] == val])
     invalid_df = invalid_df.sort_index()
-        
+    
+    # Create valid df
     valid = num_unique.loc[num_unique["PRD"] != 0]
     valid = pd.DataFrame(valid, columns=['SRS ID', 'PRD'])
     for val in valid['SRS ID']:
@@ -161,6 +160,8 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     """
     
     trace["PRD_clean"] = trace["PRD"]
+    
+    # function to clean PRD column
     def get_req_list(string, prefix):
         string = string.replace(",", " ")
         test_list = string.split()
@@ -174,11 +175,13 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     
     trace["PRD_clean"] = trace["PRD_clean"].apply(lambda row: get_req_list(row, prd_prefix))
     
-    trace["valid"] = trace["PRD_clean"].apply(lambda lst: any((True for x in lst if x in active_prd_list)))
+    # Valid if PRDs are all in active list
+    trace["valid"] = trace["PRD_clean"].apply(lambda lst: all((True for x in lst if x in active_prd_list)))
     
     invalid_df = trace[(trace['valid'] == False) & (trace['PRD_clean'].str.len() != 0)]
     invalid_df = invalid_df.drop(columns=['PRD_clean', 'valid'])
     
+    # create valid df by subtracting invalid from trace
     if (len(invalid_df.index) == 0):
         valid_df = trace
         valid_df = valid_df.drop(columns=['PRD_clean', 'valid'])
@@ -211,6 +214,7 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     
     trace["srs_list"] = trace["Test Name"]
     
+    # function to clean column and put into list
     def get_req_list(string, prefix):
         test_list = string.split()
         req_list = []
@@ -222,8 +226,10 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     
     trace["srs_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, srs_prefix))
     
-    trace["invalid"] = trace["srs_list"].apply(lambda lst: any((True for x in lst if x in obs_srs_list)))
+    # Valid if SRS are all not in obsolete list
+    trace["invalid"] = trace["srs_list"].apply(lambda lst: all((True for x in lst if x in obs_srs_list)))
     
+    # Create valid and invalid dfs
     valid_df = trace[trace['invalid'] == False]
     valid_df = valid_df.drop(columns=['srs_list', 'invalid'])
     
@@ -252,6 +258,7 @@ def check_prd_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     
     trace["prd_list"] = trace["Test Name"]
     
+    # function to clean column and put into list
     def get_req_list(string, prefix):
         test_list = string.split()
         req_list = []
@@ -263,8 +270,10 @@ def check_prd_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     
     trace["prd_list"] = trace["prd_list"].apply(lambda row: get_req_list(row, prd_prefix))
     
-    trace["valid"] = trace["prd_list"].apply(lambda lst: any((True for x in lst if x in active_prd_list)))
+    # Valid if PRD are all in active list
+    trace["valid"] = trace["prd_list"].apply(lambda lst: all((True for x in lst if x in active_prd_list)))
     
+    # Create invalid and valid dfs
     invalid_df = trace[(trace['valid'] == False) & (trace['prd_list'].str.len() != 0)]
     invalid_df = invalid_df.drop(columns=['prd_list', 'valid'])
     
@@ -279,54 +288,4 @@ def check_prd_exists(trace, active_prd_list, prd_prefix, srs_prefix):
     invalid_df.insert(0, "Error:", "PRD referenced by test does not exist")
     
     return valid_df, invalid_df
-    
-    
-def check_tests_traced_to_reqs(trace, prd_prefix, srs_prefix):
-    """check whether each test has been traced to all requirements they reference
-    
-    Args:
-        file_path (String): path to the trace matrix
-        matrix_type (String): "CO" or "PSC"
-        
-    Returns:
-        String "Passed" if all tests have been traced to all requirements
-        Error message if a test hasn't been traced to all requirements
-        list of tests not traced
-    """
-    
-    trace["srs_list"] = trace["Test Name"]
-    trace["prd_list"] = trace["Test Name"]
-    
-    
-    def get_req_list(string, prefix):
-        test_list = string.split()
-        req_list = []
-
-        for val in test_list:
-            if val.startswith(prefix):
-                req_list.append(val)
-        return req_list
-    
-    
-    trace["srs_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, srs_prefix))
-    trace["prd_list"] = trace["Test Name"].apply(lambda row: get_req_list(row, prd_prefix))
-    
-    invalid = []
-    valid = []
-    
-    for index, row in trace.iterrows():
-        for val in row["srs_list"]:
-            if ((trace["SRS ID"] == val) & (trace["Test Name"] == row["Test Name"])).any() == False:
-                invalid.append(row["Test Name"])
-            else:
-                valid.append(row["Test Name"])
-
-        for val in row["prd_list"]:
-            if ((trace["PRD"] == val) & (trace["Test Name"] == row["Test Name"])).any() == False:
-                invalid.append(row["Test Name"])
-            else:
-                valid.append(row["Test Name"])
-    
-        
-    return set(valid), set(invalid)
-        
+  
