@@ -1,5 +1,6 @@
 import argparse
 
+from read_write import write_error_log
 from create_trace import create_trace
 from validate_trace import validate_trace
 
@@ -12,14 +13,15 @@ def run(params):
     invalid_dfs = []
 
     # 1. Create trace matrix based on test data files
-    trace, invalid = create_trace(vv_folder_path, as_run_path, version_num, srs_prefix)
+    trace, invalid = create_trace(params["automated_tests_path"], params["manual_as_runs"], params["version_num"], params["srs_prefix"])
     invalid_dfs.extend(invalid)
     
     # 2. Validate trace matrix
-    trace, invalid = validate_trace(trace, obs_srs_path, active_prd_path, prd_prefix, srs_prefix)
+    trace, invalid = validate_trace(trace, params["obs_srs_path"], params["active_prd_path"], params["prd_prefix"], params["srs_prefix"])
     invalid_dfs.extend(invalid)
     
     # 3. Export trace matrix and error log
+    write_error_log("temp_error_log.csv", invalid_dfs)
     trace.to_csv(params["out_path"], index=False)
     
     print("Script finished")
@@ -31,9 +33,9 @@ if __name__ == "__main__":
     
     >>> python run.py -o "output_file.xlsx" -m "path/to/manual_as_runs.docx" -s "obsolete_tests.csv" <CONTINUED; all the other args, listed below> 
     """
-    parser = argparse.ArgumentParser(description='Trace matrix generation and validation. "
+    parser = argparse.ArgumentParser(description="Trace matrix generation and validation. "
                                      "Can run this python script `run.py` in console, providing arguments "
-                                     "that will be parsed')
+                                     "that will be parsed")
 
     parser.add_argument("-o", "--out_path",
                         help="Output path of new trace matrix. Should have `.xlsx` in it",
