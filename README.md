@@ -37,3 +37,5 @@ After the validation step, the utility will output an **error log** in a csv fil
   * contains functions for validating the new trace matrix
 
 # How To Use
+
+# Next Steps
