@@ -10,7 +10,7 @@ def validate_trace(trace, obs_srs_file_path, active_prd_path, prd_prefix="US", s
     # Load lists of obsolete srs and active prd  
     obs_srs = pd.read_csv(obs_srs_file_path)
     obs_srs_list = obs_srs["Formatted ID"].unique()
-    active_prd = pd.read_csv(active_prd_path)
+    active_prd = pd.read_excel(active_prd_path)
     active_prd_list = active_prd["ID"].unique()
     
     # Gather all the errors
