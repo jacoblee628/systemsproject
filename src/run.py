@@ -1,6 +1,6 @@
 # TODO: When necessary args are decided, maybe write an argparser?
 
-if __name__ == "__main__":
+def run():
     """Code that's run when run.sh or python src/run.py is called"""
     print("Running script")
     
@@ -18,6 +18,9 @@ if __name__ == "__main__":
     trace_path = "../data/ER 2228015 v43 ATT1 Sapphire 1.33 Trace Matrix.xlsx"
     prev_trace_path = "../data/ER 2228015 v42 ATT1 Sapphire 1.32 Trace Matrix.xlsx"
     
-    # ``
+    # run "create_trace.create_trace()"
     
     print("Script finished")
+
+if __name__ == "__main__":
+    run()

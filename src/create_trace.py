@@ -2,10 +2,10 @@ import pandas as pd
 
 import read_write as rw
 
-def create_trace(folder_path, version_num):
-    # -------------
+def create_trace(folder_path, as_run_path, version_num):
+    # ----------------
     # 1. Preprocessing
-    # -------------
+    # ----------------
     # Create a path object (from pathlib) for the vv root folder.
     vv_folder_path = Path(folder_path)
     
@@ -19,15 +19,21 @@ def create_trace(folder_path, version_num):
     version_path = [x for x in vv_folder_path.iterdir() if x.is_dir() and x.name == version_num][0]
     
     
-    # -------------
-    # 2. Loading Automated Tests
-    # -------------
+    # --------------------------------------------
+    # 2. Loading Automated and Manual As-run Tests
+    # --------------------------------------------
     # Rest API tests
-    # Note: "/" on a pathlib.Path allows navigating into child folders
-    rest_api_df = rw.read_rest_api_tests(version_path / "RestApiTests")
     
     # Rx tests
     rx_df = rw.read_rx_tests(version_path / "Rx")
+    
+    # Manual tests
+    as_run_df = rw.read_as_run_tests(as_run_path)
+    
+    # ------------
+    # 3. Filtering 
+    # ------------
+    
     
     # obs_srs = pd.read_csv(obs_srs_file_path)
     # obs_srs_list = obs_srs["Formatted ID"].unique()
@@ -35,8 +41,7 @@ def create_trace(folder_path, version_num):
     # active_prd_list = active_prd["ID"].unique()
 
 
-    
-def filter_tests(tests):
+def filter_status(tests_df):
     """Filters out any tests with statuses that aren't equal to "Passed" or "Failed"
 
     Args:
@@ -45,9 +50,11 @@ def filter_tests(tests):
     Returns:
         two list or pd.DataFrame: the valid and invalid automated rest_api tests
     """
-    valid = tests[(tests['Test Status']=='Passed') | (tests['Test Status']=='Failed')]
-    invalid = tests[(tests['Test Status']!='Passed') & (tests['Test Status']!='Failed')]
+    valid = tests_df[(tests_df['Test Status']=='Passed') | (tests_df['Test Status']=='Failed')]
+    invalid = tests_df[(tests_df['Test Status']!='Passed') & (tests_df['Test Status']!='Failed')]
     return valid, invalid
+    
+def process_rest_api_tests(folder_path, version_num):
+    rest_api_df = rw.read_rest_api_tests(version_path / "RestApiTests") # Note: "/" on a pathlib.Path allows navigating into child folders
+    
 
-
-# def 

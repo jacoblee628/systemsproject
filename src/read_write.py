@@ -60,11 +60,11 @@ def read_trace(file_path, matrix_type, return_df=True):
     else:
         return data
 
-def read_manual_tests(file_path, return_df=True):
-    """Loads in the test statuses from the manual tests document. Document must be in .docx format.
+def read_as_run_tests(file_path, return_df=True):
+    """Loads in the test statuses from the manual as run tests document. Document must be in .docx format.
 
     Args:
-        file_path (String): path to the file
+        file_path (String): path to the file (.docx)
         return_df (bool, optional): If true, returns pandas dataframe. Else dict. Defaults to True.
 
     Returns:
@@ -73,25 +73,43 @@ def read_manual_tests(file_path, return_df=True):
     # Open the file and read with python-docx package
     with open(file_path, 'rb') as f:
         document = Document(f)
-
-    # Get the test statuses
-    statuses = []
-    for i, table in enumerate(document.tables):
-        if table.cell(0,0).text == "Status:":
-            statuses.append(table.cell(0,1).text)
-
+        
     # Get the test names
+    # (Need to iterate separately because theyre technically separate "paragraphs")
     test_names = []
+    run_ids = []
+    # For each "paragraph" in the document,
     for i, paragraph in enumerate(document.paragraphs):
-        if "Run ID" in paragraph.text:
+        # Find lines that have "Run ID" in them
+        if "Run ID:" in paragraph.text:
+            # The line before that has the test name
             test_names.append(document.paragraphs[i-1].text)
+            # Also store the run_id (for error log)
+            run_id = int(paragraph.text.replace("Run ID:", ""))
+            run_ids.append(run_id)
 
-    # # Make sure same number of test names and statuses
-    # assert len(test_names) == len(statuses), "Error: Couldn't parse same number of test names and test statuses.\n# test names: {len(test_names)}, # statuses: {len(statuses)}"
+    # Get the table info
+    data = []
+
+    # For each table in the document:
+    entry_idx = 0
+    for table in document.tables:
+        # If the first few cells belong to a test, it's probably a test description table
+        if table.cell(0,0).text == "Status:" and table.cell(1,2).text == "1. Product":
+            # Extract the test info from table
+            data.append({
+                "Test Name": test_names[entry_idx],
+                "Run ID": run_ids[entry_idx],
+                "Test Status": table.cell(0,1).text,
+                "Release":table.cell(2,1).text,
+                "Application": table.cell(1,3).text,
+            })
+
+            entry_idx += 1
 
     # make a dataframe for outputting
-    df = pd.DataFrame({"Test Name":test_names, "Test Status":statuses})
-    
+    df = pd.DataFrame(data)
+
     # Also add the V&V Test Report info by extracting it from file name
     file_name = Path(file_path).stem
     v_v = re.findall("ER[0-9]+ v[0-9]+", file_name)[0].replace("ER", "")
