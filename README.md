@@ -27,12 +27,12 @@ After the validation step, the utility will output a error log in a csv file wit
 
 # Files Included
 * **create_trace.py**
- * contains functions for creating the new trace matrix and validating manual and automatic tests
+  * contains functions for creating the new trace matrix and validating manual and automatic tests
 * **read_write.py**
- * contains functions for reading in input files
+  * contains functions for reading in input files
 * **run.py**
 * **select_file.py**
- * contains functions for creating a user interface
+  * contains functions for creating a user interface
 * **validate_trace.py**
   * contains functions for validating the new trace matrix
 
