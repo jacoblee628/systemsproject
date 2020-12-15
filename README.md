@@ -37,3 +37,9 @@ After the validation step, the utility will output an **error log** in a csv fil
   * contains functions for validating the new trace matrix
 
 # How To Use
+* **for Windows systems:**
+  * double click the start.ext in dict folder
+  * click select buttons to select corresponding files/folders
+  * input the version number in the pattern of #.#.#
+  * select srs prefix from the dropdown list
+  * click start button to start processing

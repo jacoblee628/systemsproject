@@ -1,6 +1,8 @@
 from tkinter import *
 import tkinter.filedialog as fd
 import tkinter.messagebox as messagebox
+import re
+#import run
 
 class Application(Frame):
     def __init__(self, master=None):
@@ -54,26 +56,32 @@ class Application(Frame):
         self.TraceMatrixselectBtn=Button(self, text="select",command=self.selectTraceMatrixPath)
         self.TraceMatrixselectBtn.grid(row=4,column=2)
 
-        #Rest api folder select
-        self.RestAPIpath=StringVar()
-        self.RestAPInameLabel=Label(self, text="RestAPI folder path:")
-        self.RestAPInameLabel.grid(row=5,column=0)
-        self.RestAPIfileName=Entry(self, textvariable=self.RestAPIpath, width='60')
-        self.RestAPIfileName.grid(row=5,column=1)
-        self.RestAPIselectBtn=Button(self, text="select",command=self.selectRestAPIPath)
-        self.RestAPIselectBtn.grid(row=5,column=2)
+        #Automated tests folder select
+        self.automatedTestspath=StringVar()
+        self.automatedTestsnameLabel=Label(self, text="Automated Tests folder path:")
+        self.automatedTestsnameLabel.grid(row=5,column=0)
+        self.automatedTestsfileName=Entry(self, textvariable=self.automatedTestspath, width='60')
+        self.automatedTestsfileName.grid(row=5,column=1)
+        self.automatedTestsselectBtn=Button(self, text="select",command=self.selectautomatedTestsPath)
+        self.automatedTestsselectBtn.grid(row=5,column=2)
 
-        #Performance test results file select
-        self.performancepath=StringVar()
-        self.performancenameLabel=Label(self, text="Performance Test file path:")
-        self.performancenameLabel.grid(row=6,column=0)
-        self.performancefileName=Entry(self, textvariable=self.performancepath, width='60')
-        self.performancefileName.grid(row=6,column=1)
-        self.performanceselectBtn=Button(self, text="select",command=self.selectperformancePath)
-        self.performanceselectBtn.grid(row=6,column=2)
+        # version number input
+        self.versionNumpath=StringVar()
+        self.versionNumnameLabel=Label(self, text="Input Version Number(#.#.#) here :")
+        self.versionNumnameLabel.grid(row=6,column=0)
+        self.versionNumName=Entry(self, textvariable=self.versionNumpath, width='40')
+        self.versionNumName.grid(row=6,column=1)
 
-        self.startBtn=Button(self, text="Start Process", command=self.start)
-        self.startBtn.grid(row=7,column=1)
+        #Select srs_prefix from drop down list
+        self.srsPrefix=StringVar()
+        self.srsPrefix.set("TC")
+        self.srsPrefixLabel=Label(self, text="Select SRS Prefix")
+        self.srsPrefixLabel.grid(row=7,column=0)
+        self.srsPrefixName=OptionMenu(self, self.srsPrefix, "TC", "ESA-")
+        self.srsPrefixName.grid(row=7,column=1)
+
+        self.startBtn=Button(self, text="start", command=self.start)
+        self.startBtn.grid(row=8,column=1)
 
     def selectSRSPath(self):
         SRSfile_path = fd.askopenfilename()
@@ -125,32 +133,26 @@ class Application(Frame):
             messagebox.showwarning("Message",'Wrong name!')
             self.TraceMatrixpath.set('')
     
-    def selectRestAPIPath(self):
-        RestAPIfile_path = fd.askdirectory()
-        self.RestAPIpath.set(RestAPIfile_path)
-        RestAPIname=self.RestAPIfileName.get()
-        if 'rest' in RestAPIname.lower():
-            messagebox.showinfo("Message",RestAPIname)
+    def selectautomatedTestsPath(self):
+        automatedTestsfile_path = fd.askdirectory()
+        self.automatedTestspath.set(automatedTestsfile_path)
+        automatedTestsname=self.automatedTestsfileName.get()
+        if 'er' in automatedTestsname.lower():
+            messagebox.showinfo("Message",automatedTestsname)
         else:
             messagebox.showwarning("Message",'Wrong name!')
-            self.RestAPIpath.set('')
+            self.automatedTestspath.set('')
 
-    def selectperformancePath(self):
-        performancefile_path = fd.askopenfilename()
-        self.performancepath.set(performancefile_path)
-        performancename=self.performancefileName.get()
-        if 'performance' in performancename.lower():
-            messagebox.showinfo("Message",performancename)
-        else:
-            messagebox.showwarning("Message",'Wrong name!')
-            self.performancepath.set('')
  
 
 
     
     def start(self):
-        messagebox.showinfo('Message','waiting for further integration')
-    
+        if(re.match(r'^[0-9]+\.[0-9]+\.[0-9]+$',self.versionNumName.get())==None):
+            messagebox.showinfo('Message','Invalid Version Number')
+        else:
+            param_dict={"prd":self.PRDfileName.get(), "srs":self.SRSfileName.get(), "obselete_srs":self.ObsoleteSRSfileName.get(), "manual_as_runs":self.ManualfileName.get(), "prev_trace_matrix": self.TraceMatrixfileName.get(), "automated_tests_folder":self.automatedTestsfileName.get(), "version_num":self.versionNumName.get(),"srs_prefix":self.srsPrefixName.get() }
+            #run.run(param_dict)
     
 
 app = Application()
