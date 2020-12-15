@@ -37,16 +37,16 @@ After the validation step, the utility will output an **error log** in a csv fil
   * contains functions for validating the new trace matrix
 
 # How To Use
-* **For Windows systems:**
-  1. Double click the start.ext in dist folder
-  2. Click select buttons to select corresponding files/folders
-  3. Input the version number in the pattern of #.#.#
-  4. Select srs prefix from the dropdown list
-  5. Click start button to start processing
+**For Windows systems:**
+1. Double click the start.ext in dist folder
+2. Click select buttons to select corresponding files/folders
+3. Input the version number in the pattern of #.#.#
+4. Select srs prefix from the dropdown list
+5. Click start button to start processing
 
-* **For Linux and macOS systems:**
-  1. Open terminal and run the select_file.py
-  2. Click select buttons to select corresponding files/folders
-  3. Input the version number in the pattern of #.#.#
-  4. Select srs prefix from the dropdown list
-  5. Click start button to start processing
+**For Linux and macOS systems:**
+1. Open terminal and run the select_file.py
+2. Click select buttons to select corresponding files/folders
+3. Input the version number in the pattern of #.#.#
+4. Select srs prefix from the dropdown list
+5. Click start button to start processing
