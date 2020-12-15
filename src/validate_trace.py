@@ -44,6 +44,8 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     for val in valid['PRD']:
         valid_df = valid_df.append(trace[trace['PRD'] == val])
     valid_df = valid_df.sort_index()
+
+    invalid_df = invalid_df.insert(0, "Error: PRD does not have SRS")
     
     return valid_df, invalid_df
     
@@ -87,6 +89,8 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
     for val in valid['SRS ID']:
         valid_df = valid_df.append(trace[trace['SRS ID'] == val])
     valid_df = valid_df.sort_index()
+    
+    invalid_df = invalid_df.insert(0, "Error: SRS does not have test")
 
     return valid_df, invalid_df
     
@@ -130,6 +134,8 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
     for val in valid['SRS ID']:
         valid_df = valid_df.append(trace[trace['SRS ID'] == val])
     valid_df = valid_df.sort_index()
+    
+    invalid_df = invalid_df.insert(0, "Error: SRS does not have PRD")
 
     return valid_df, invalid_df
     
