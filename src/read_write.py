@@ -415,3 +415,24 @@ def _read_rx_txt(file_path, return_df=True):
         return pd.DataFrame(data)
     else:
         return data
+    
+    
+def write_error_log(output_path, invalid_dfs):
+    """Outputs dataframe with all invalid rows to csv file
+
+    Args:
+        output_path (String): file path of output csv
+        invalid_dfs (list): list of dataframes that have invalid rows
+
+    Output:
+        Outputs error_df to a csv file
+    """
+    error_df = pd.DataFrame()
+    
+    for df in invalid_dfs:
+        error_df = error_df.append(df)
+    
+    error_df.to_csv(output_path, index=False)   
+    
+    
+    
