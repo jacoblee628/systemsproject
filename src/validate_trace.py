@@ -45,7 +45,7 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
         valid_df = valid_df.append(trace[trace['PRD'] == val])
     valid_df = valid_df.sort_index()
 
-    #invalid_df = invalid_df.insert(0, "Error:",  "PRD does not have SRS")
+    invalid_df.insert(0, "Error:",  "PRD does not have SRS")
     
     return valid_df, invalid_df
     
@@ -90,7 +90,7 @@ def check_srs_has_test(trace, prd_prefix, srs_prefix):
         valid_df = valid_df.append(trace[trace['SRS ID'] == val])
     valid_df = valid_df.sort_index()
     
-    #invalid_df = invalid_df.insert(0, "Error:", "SRS does not have test")
+    invalid_df.insert(0, "Error:", "SRS does not have test")
 
     return valid_df, invalid_df
     
@@ -135,7 +135,7 @@ def check_srs_has_prd(trace, prd_prefix, srs_prefix):
         valid_df = valid_df.append(trace[trace['SRS ID'] == val])
     valid_df = valid_df.sort_index()
     
-    #invalid_df = invalid_df.insert(0, "Error:", "SRS does not have PRD")
+    invalid_df.insert(0, "Error:", "SRS does not have PRD")
 
     return valid_df, invalid_df
     
@@ -154,33 +154,38 @@ def check_prd_ref_by_srs_exists(trace, active_prd_list, prd_prefix, srs_prefix):
         list of obsolete prd
     """
     
-    # Get rid of n/a values
-    trace = trace.loc[trace['SRS ID'].str.startswith(srs_prefix)]
-    trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]
+    trace["PRD_clean"] = trace["PRD"]
+    def get_req_list(string, prefix):
+        string = string.replace(",", " ")
+        test_list = string.split()
+        req_list = []
+
+        for val in test_list:
+            if val.startswith(prefix) & val[-1].isdigit():
+                req_list.append(val)
+        return req_list
     
-    # Get unique PRD for each SRS
-    group = trace.groupby('SRS ID')['PRD'].unique()
-    unique_prd = pd.DataFrame({'SRS ID':group.index, 'PRD':group.values})
     
-    # Get list of obsolete PRD
-    invalid = []
-    valid = []
+    trace["PRD_clean"] = trace["PRD_clean"].apply(lambda row: get_req_list(row, prd_prefix))
     
-    for lst in unique_prd["PRD"]:
-        for val in lst:
-            val = val.split()
-            for x in val:
-                x = re.sub(r'[^\w\s]','',x)
-                x = re.sub( r"([A-Z][A-Z])", r" \1", x).split()
-                for y in x:
-                    if y not in active_prd_list:
-                        invalid.append(y)
-                    else:
-                        valid.append(y)
+    trace["valid"] = trace["PRD_clean"].apply(lambda lst: any((True for x in lst if x in active_prd_list)))
     
-    # invalid = set(invalid)
-    # valid = set(valid)
-    return valid, invalid
+    invalid_df = trace[(trace['valid'] == False) & (trace['PRD_clean'].str.len() != 0)]
+    invalid_df = invalid_df.drop(columns=['PRD_clean', 'valid'])
+    
+    if (len(invalid_df.index) == 0):
+        valid_df = trace
+        valid_df = valid_df.drop(columns=['PRD_clean', 'valid'])
+    else:
+        valid_df = trace.merge(invalid_df, how='left', indicator=True)
+        valid_df = valid_df[valid_df['_merge'] == 'left_only']
+        valid_df = valid_df.drop(columns=['_merge', 'PRD_clean', 'valid'])
+    
+    valid_df = valid_df.sort_index()
+    
+    invalid_df.insert(0, "Error:",  "PRD referenced by SRS does not exist")
+
+    return valid_df, invalid_df
     
     
 def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
@@ -216,14 +221,15 @@ def check_srs_exists(trace, obs_srs_list, prd_prefix, srs_prefix):
     valid_df = valid_df.drop(columns=['srs_list', 'invalid'])
     
     invalid_df = trace[trace['invalid'] == True]
-    #invalid_df = invalid_df.insert(0, "Error:", "Test references obsolete SRS")
     invalid_df = invalid_df.drop(columns=['srs_list', 'invalid'])
+    
+    invalid_df.insert(0, "Error:", "Test references obsolete SRS")
     
     return valid_df, invalid_df
    
     
 def check_prd_exists(trace, active_prd_list):
-    """check whether all srs referenced by tests exist
+    """check whether all prd referenced by tests exist
     
     Args:
         file_path_trace (String): path to the trace matrix
@@ -262,6 +268,7 @@ def check_prd_exists(trace, active_prd_list):
         valid_df = valid_df[valid_df['_merge'] == 'left_only']
         valid_df = valid_df.drop(columns=['_merge', 'prd_list', 'valid'])
     
+    invalid_df.insert(0, "Error:", "PRD referenced by test does not exist")
     
     return valid_df, invalid_df
     
