@@ -12,7 +12,7 @@ The utility will take in the following inputs:
 * Previous Trace Matrix
 * Release Number
 
-The utililty will then process these files and output a new trace matrix based on these files. In addition, the utility will validate the new trace matrix based on these checks:
+The utililty will then **process these files and output a new trace matrix** based on these files. In addition, the utility will **validate** the new trace matrix based on these checks:
 * Manual tests are pass or fail
 * Automated tests are pass or fail
 * All PRD must have at least one SRS
@@ -26,14 +26,14 @@ After the validation step, the utility will output a error log in a csv file wit
 
 
 # Files Included
-* create_trace.py
+* **create_trace.py**
  * contains functions for creating the new trace matrix and validating manual and automatic tests
-* read_write.py
+* **read_write.py**
  * contains functions for reading in input files
-* run.py
-* select_file.py
+* **run.py**
+* **select_file.py**
  * contains functions for creating a user interface
-* validate_trace.py
+* **validate_trace.py**
   * contains functions for validating the new trace matrix
 
 # How To Use
