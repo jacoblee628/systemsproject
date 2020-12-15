@@ -70,7 +70,6 @@ def read_manual_tests(file_path, return_df=True):
     Returns:
         pd.DataFrame or dict: Test names and corresponding statuses
     """
-
     # Open the file and read with python-docx package
     with open(file_path, 'rb') as f:
         document = Document(f)
@@ -91,7 +90,7 @@ def read_manual_tests(file_path, return_df=True):
     # assert len(test_names) == len(statuses), "Error: Couldn't parse same number of test names and test statuses.\n# test names: {len(test_names)}, # statuses: {len(statuses)}"
 
     # make a dataframe for outputting
-    df = pd.DataFrame({"test_name":test_names, "status":statuses})
+    df = pd.DataFrame({"Test Name":test_names, "Test Status":statuses})
     
     # Also add the V&V Test Report info by extracting it from file name
     file_name = Path(file_path).stem
@@ -168,12 +167,12 @@ def read_performance_test_results_by_tc(file_path, return_df=True):
             break
         contents.append(row)
 
+    # First row is column headers, onwards is data
     df = pd.DataFrame(contents[1:], columns=contents[0])
     
     # Format to be a bit more similar to other datasets    
     df = df.rename({"PASS/FAIL": "Test Status"}, axis=1)
     df["Test Status"] = df["Test Status"].replace("PASS", "Passed").replace("FAIL", "Failed")
-
 
     # Return pandas dataframe if specified, otherwise return a list of dicts
     if return_df:

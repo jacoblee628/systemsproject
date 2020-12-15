@@ -33,3 +33,21 @@ def create_trace(folder_path, version_num):
     # obs_srs_list = obs_srs["Formatted ID"].unique()
     # active_prd = pd.read_csv(active_prd_path)
     # active_prd_list = active_prd["ID"].unique()
+
+
+    
+def filter_tests(tests):
+    """Filters out any tests with statuses that aren't equal to "Passed" or "Failed"
+
+    Args:
+        tests (pandas.DataFrame): the test data; note that there should be a column called "status"
+        
+    Returns:
+        two list or pd.DataFrame: the valid and invalid automated rest_api tests
+    """
+    valid = tests[(tests['Test Status']=='Passed') | (tests['Test Status']=='Failed')]
+    invalid = tests[(tests['Test Status']!='Passed') & (tests['Test Status']!='Failed')]
+    return valid, invalid
+
+
+# def 
