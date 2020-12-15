@@ -19,6 +19,7 @@ def check_prd_has_srs(trace, prd_prefix, srs_prefix):
     """
     
     # Get rid of n/a values
+    invalid_df = trace.loc[-trace['PRD'].str.startswith(prd_prefix)]
     trace = trace.loc[trace['PRD'].str.startswith(prd_prefix)]
     
     for val in trace['SRS ID']:
