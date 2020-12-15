@@ -1,4 +1,4 @@
-# Trace Matrix Utility Description
+# Trace Matrix Utility
 The purpose of this trace matrix utility is to take in set of inputs and output a validated trace matrix.
 
 The utility will take in the following inputs:
