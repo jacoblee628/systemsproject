@@ -112,7 +112,7 @@ def read_as_run_tests(file_path, return_df=True):
 
     # Also add the V&V Test Report info by extracting it from file name
     file_name = Path(file_path).stem
-    v_v = re.findall("ER[0-9]+ v[0-9]+", file_name)[0].replace("ER", "")
+    v_v = re.findall("ER([0-9]+ v[0-9]+|[0-9]+v[0-9]+)", file_name)[0].replace("ER", "")
     df["V&V Test Report"] = v_v
 
     # Output as either pandas dataframe or dict, depending on return_df setting.
@@ -278,7 +278,12 @@ def _read_group_by_method_txt(file_path, return_df=True):
         
         # Also add the V&V Test Report info by extracting it from file name
         er_folder_name = file_path.parts[base_folder_idx - 2]
-        v_v = re.findall("ER[0-9]+ v[0-9]+", er_folder_name)[0].replace("ER", "")
+        v_v = re.findall("ER([0-9]+ v[0-9]+|[0-9]+v[0-9]+)", er_folder_name)[0].replace("ER", "")
+        
+        # If there's no space in the file name (like ER2228014v53), add one
+        v_idx = v_v.find("v")
+        if v_v[v_idx - 1] != " ":
+            v_v = v_v[:v_idx] + " " + v_v[v_idx:]
         
         # Store data in list
         data.append({
@@ -388,7 +393,12 @@ def _read_rx_txt(file_path, return_df=True):
         
         # Also add the V&V Test Report info by extracting it from file name
         er_folder_name = file_path.parts[base_folder_idx - 2]
-        v_v = re.findall("ER[0-9]+ v[0-9]+", er_folder_name)[0].replace("ER", "")
+        v_v = re.findall("ER([0-9]+ v[0-9]+|[0-9]+v[0-9]+)", er_folder_name)[0].replace("ER", "")
+        
+        # If there's no space in the file name (like ER2228014v53), add one
+        v_idx = v_v.find("v")
+        if v_v[v_idx - 1] != " ":
+            v_v = v_v[:v_idx] + " " + v_v[v_idx:]
         
         # Store data in list
         data.append({

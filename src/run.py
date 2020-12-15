@@ -1,6 +1,6 @@
 # TODO: When necessary args are decided, maybe write an argparser?
 
-def run():
+def run(params):
     """Code that's run when run.sh or python src/run.py is called"""
     print("Running script")
     
@@ -23,4 +23,5 @@ def run():
     print("Script finished")
 
 if __name__ == "__main__":
-    run()
+    params = {}
+    run(params)

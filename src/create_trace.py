@@ -11,10 +11,7 @@ def create_trace(folder_path, as_run_path, version_num):
     
     # Check that the user input folder location actually exists
     assert vv_folder_path.exists(), "The specified V&V automatic test data folder does not exist."
-
-    # Extract the V&V info string from the folder name 
-    v_v = re.findall("ER[0-9]+ v[0-9]+", vv_folder_path.name)[0].replace("ER", "")
-
+    
     # Get the correct folder for the provided version number.
     version_path = [x for x in vv_folder_path.iterdir() if x.is_dir() and x.name == version_num][0]
     
@@ -53,8 +50,16 @@ def filter_status(tests_df):
     valid = tests_df[(tests_df['Test Status']=='Passed') | (tests_df['Test Status']=='Failed')]
     invalid = tests_df[(tests_df['Test Status']!='Passed') & (tests_df['Test Status']!='Failed')]
     return valid, invalid
+
+def process_as_run_tests(as_run_path):
+    manual.loc[manual["Test Name"].isin([""])]
+    
+    # Also add the V&V Test Report info by extracting it from file name
+    file_name = Path(as_run_path).stem
+    v_v = re.findall("ER([0-9]+ v[0-9]+|[0-9]+v[0-9]+)", file_name)[0].replace("ER", "")
     
 def process_rest_api_tests(folder_path, version_num):
+    # Read in the tests (naive; no )
     rest_api_df = rw.read_rest_api_tests(version_path / "RestApiTests") # Note: "/" on a pathlib.Path allows navigating into child folders
     
-
+    # 
