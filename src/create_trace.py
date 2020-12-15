@@ -1,13 +1,15 @@
 import pandas as pd
+from pathlib import Path
 
 import read_write as rw
 
-def create_trace(folder_path, as_run_path, version_num):
+def create_trace(prev_trace, vv_folder_path, as_run_path, version_num):
     # ----------------
     # 1. Preprocessing
     # ----------------
     # Create a path object (from pathlib) for the vv root folder.
-    vv_folder_path = Path(folder_path)
+    if isinstance(vv_folder_path, str):
+        vv_folder_path = Path(vv_folder_path)
     
     # Check that the user input folder location actually exists
     assert vv_folder_path.exists(), "The specified V&V automatic test data folder does not exist."
@@ -78,7 +80,10 @@ def process_as_run_tests(as_run_path):
     invalid_dfs.append(invalid_df)
     as_run_df = as_run_df.loc[as_run_df["Test Name"].str[0:3].isin(["PRD", "SRS"])]
 
-    # 
+    # ---------------------------------
+    # Formatting and filling in columns
+    # ---------------------------------
+    
     
 def process_rest_api_tests(folder_path, version_num):
     # Read in the tests (naive; no )

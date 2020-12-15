@@ -104,6 +104,7 @@ def read_as_run_tests(file_path, return_df=True):
                 "Test Status": table.cell(0,1).text,
                 "Release":table.cell(2,1).text,
                 "Application": table.cell(1,3).text,
+                "Owner": table.cell(1,1).text
             })
 
             entry_idx += 1
