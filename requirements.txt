@@ -1,0 +1,5 @@
+# Just run `pip install -r requirements.txt` (without the `s) and it'll install everything
+python_version >= '3.7' # Some of the printing syntax is from 3.7; can possibly downgrade
+openpyxl>=3.0.4
+python-docx>=0.8.10
+pandas>=1.0.0

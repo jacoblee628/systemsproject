@@ -1,5 +1,17 @@
-# Trace Matrix Utility
-The purpose of this trace matrix utility is to take in set of inputs and output a validated trace matrix.
+# CMU Capstone Project: Trace Matrix Utility
+This capstone project was created in partnership with Philips. We were allowed to make this code visible as part of our professional portfolios, as part of the contract signed for all capstone projects.
+
+Team members:
+* Bryan Denny
+* Pooja Pubvadi
+* Yuhan Liu
+* Jacob Lee
+
+## Description
+
+Philips manages and reports information about hundreds of thousands of product safety tests, as per regulatory requirement. This is largely done by hand, which can be a difficult and consuming process.
+
+This utility receives Excel, Word, and text documents containing information about product tests and regulatory requirements, scrapes the test information, then outputs a dataset containing the formatted data. It also runs tests to ensure that the outputted data is of appropriate quality, and tries to detect any errors/inconsistencies.
 
 The utility will take in the following inputs:
 * SRS
