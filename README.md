@@ -3,7 +3,7 @@ This capstone project was created in partnership with Philips. We were allowed t
 
 Team members:
 * Bryan Denny
-* Pooja Pubvadi
+* Pooja Puvvadi
 * Yuhan Liu
 * Jacob Lee
 
